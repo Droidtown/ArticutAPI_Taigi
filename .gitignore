@@ -2,7 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+.*
+my_dict/._*
+moe_dict/._*
 # C extensions
 *.so
 

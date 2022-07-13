@@ -4,12 +4,13 @@
 from ArticutAPI import Articut
 from glob import iglob
 import json
+import re
 import tempfile
 
 class ArticutTG:
     def __init__(self, username="", apikey=""):
         self.articut = Articut(username=username, apikey=apikey)
-
+        self.posPat = re.compile("<[^<]*>([^<]*)</([^<]*)>")
         self.userDefinedDICT = {}
         for i in iglob("./moe_dict/*.json"):
             self.userDefinedDICT[i.split("/")[-1].replace(".json", "")] = json.load(open("{}".format(i), encoding="utf-8"))
@@ -35,6 +36,34 @@ class ArticutTG:
         json.dump(self.userDefinedDICT, self.userDefinedDictFILE)
         self.userDefinedDictFILE.flush()
 
+    def _pos2Obj(self, posLIST):
+        resultLIST = []
+        for pos in posLIST:
+            if '</' in pos:
+                textPosLIST = [[p.group(1), p.group(2)] for p in self.posPat.finditer(pos)]
+                # group(0) <ACTION_verb>結帳</ACTION_verb>
+                # group(1) 結帳
+                # group(2) ACTION_verb
+                objLIST = []
+                for txt, p in textPosLIST:
+                    objLIST.append({
+                        "text": txt,
+                        "pos": p,
+                    })
+                if objLIST:
+                    resultLIST.append(objLIST)
+                else:
+                    resultLIST.append([{
+                        "text": pos,
+                        "pos": 'PUNCTUATION',
+                    }])
+            else:
+                resultLIST.append([{
+                    "text": pos,
+                    "pos": 'PUNCTUATION',
+                }])
+        return resultLIST
+
     def parse(self, inputSTR, level="lv1"):
         resultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.userDefinedDictFILE.name)
         POScandidateLIST = []
@@ -47,6 +76,7 @@ class ArticutTG:
             for p in POScandidateLIST:
                 resultDICT["result_pos"][i] = resultDICT["result_pos"][i].replace(p[0],p[1])
 
+        resultDICT["result_obj"] = self._pos2Obj(resultDICT["result_pos"])
         return resultDICT
 
 
@@ -56,5 +86,4 @@ if __name__ == "__main__":
     inputSTR = "阮真歡迎ta̍k-ke做伙來做台灣語言"
     articutTaigi = ArticutTG()
     resultDICT = articutTaigi.parse(inputSTR)
-    print(resultDICT["result_pos"])
-    print(resultDICT["result_segmentation"])
+    print(resultDICT)

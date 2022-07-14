@@ -4,6 +4,7 @@
 from ArticutAPI import Articut
 from glob import iglob
 import json
+from pprint import pprint
 import re
 import tempfile
 
@@ -83,7 +84,7 @@ class ArticutTG:
 
 if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
-    inputSTR = "阮真歡迎ta̍k-ke做伙來做台灣語言"
+    inputSTR = "你ē-sái請逐家提供字句hō͘你做試驗。"
     articutTaigi = ArticutTG()
     resultDICT = articutTaigi.parse(inputSTR)
-    print(resultDICT)
+    pprint(resultDICT)

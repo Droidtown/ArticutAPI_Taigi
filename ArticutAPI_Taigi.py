@@ -84,6 +84,7 @@ class ArticutTG:
 if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     inputSTR = "阮真歡迎ta̍k-ke做伙來做台灣語言"
+    inputSTR = "台語線頂字典主要ê用途是"
     articutTaigi = ArticutTG()
     resultDICT = articutTaigi.parse(inputSTR)
     print(resultDICT)

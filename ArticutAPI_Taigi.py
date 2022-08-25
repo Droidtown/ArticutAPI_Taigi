@@ -13,25 +13,32 @@ class ArticutTG:
         self.articut = Articut(username=username, apikey=apikey)
         self.posPat = re.compile("<[^<]*>([^<]*)</([^<]*)>")
         self.userDefinedDICT = {}
+        self.cjkPAT = re.compile(u'[\u4e00-\u9fff]')
         for i in iglob("./moe_dict/*.json"):
             self.userDefinedDICT[i.split("/")[-1].replace(".json", "")] = json.load(open("{}".format(i), encoding="utf-8"))
 
-        posLIST = []
         for i in iglob("./my_dict/*.json"):
             POS = i.split("/")[-1].replace(".json", "")
             if POS in self.userDefinedDICT.keys():
                 pass
             else:
                 self.userDefinedDICT[POS] = []
-            posLIST.extend(json.load(open("{}".format(i), encoding="utf-8")))
 
-        for k in self.userDefinedDICT.keys():
-            self.userDefinedDICT[k] = list(set(self.userDefinedDICT[k])-set(posLIST))
-            try:
-                self.userDefinedDICT[k].extend(json.load(open("./my_dict/{}.json".format(k), encoding="utf-8")))
-            except FileNotFoundError:
-                pass
-            self.userDefinedDICT[k] = list(set(self.userDefinedDICT[k]))
+            for k in self.userDefinedDICT.keys():
+                posLIST = json.load(open("{}".format(i), encoding="utf-8"))
+                tmpLIST = []
+                for p in posLIST:
+                    if re.search(self.cjkPAT, p.strip()):
+                        tmpLIST.append(p.strip())
+                    else:
+                        for w in (p.strip().lower(), p.strip().upper(), p.strip().title(), p.strip().capitalize(), p.strip()):
+                            tmpLIST.append(" {}".format(w))
+                            tmpLIST.append("{} ".format(w))
+                            tmpLIST.append(" {} ".format(w))
+                            tmpLIST.append("{}".format(w))
+                if tmpLIST != []:
+                    self.userDefinedDICT[k].extend(tmpLIST)
+                self.userDefinedDICT[k] = list(set(self.userDefinedDICT[k]))
 
         self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+")
         json.dump(self.userDefinedDICT, self.userDefinedDictFILE)
@@ -85,9 +92,8 @@ class ArticutTG:
 
 if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
-    #inputSTR = "阮真歡迎 ta̍k-ke 做伙來做台灣語言"
+    inputSTR = "阮真歡迎 Ta̍k-ke 做伙來做台灣語言"
     #inputSTR = "台語線頂字典主要 le-ê 用途是"
-    inputSTR = "阿叔喜歡寫蜘蛛掠網頁"
 
     articutTaigi = ArticutTG()
     resultDICT = articutTaigi.parse(inputSTR)

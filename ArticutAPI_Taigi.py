@@ -4,6 +4,7 @@
 from ArticutAPI import Articut
 from glob import iglob
 import json
+from pprint import pprint
 import re
 import tempfile
 
@@ -65,6 +66,7 @@ class ArticutTG:
         return resultLIST
 
     def parse(self, inputSTR, level="lv1"):
+        #Todo: Add some Preprocessing here.
         resultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.userDefinedDictFILE.name)
         POScandidateLIST = []
         for tkn in resultDICT["result_segmentation"].split("/"):
@@ -83,8 +85,10 @@ class ArticutTG:
 
 if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
-    inputSTR = "阮真歡迎ta̍k-ke做伙來做台灣語言"
-    inputSTR = "台語線頂字典主要ê用途是"
+    #inputSTR = "阮真歡迎 ta̍k-ke 做伙來做台灣語言"
+    #inputSTR = "台語線頂字典主要 le-ê 用途是"
+    inputSTR = "阿叔喜歡寫蜘蛛掠網頁"
+
     articutTaigi = ArticutTG()
     resultDICT = articutTaigi.parse(inputSTR)
-    print(resultDICT)
+    pprint(resultDICT)

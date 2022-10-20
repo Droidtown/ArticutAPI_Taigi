@@ -89,16 +89,16 @@ class ArticutTG:
                         if token[2] == word["text"]:
                             tokenLIST.append(token[3])
 
-                        if len(tokenLIST) > 1:
-                            resultLIST.append("({})".format("/".join(tokenLIST)))
-                        elif len(tokenLIST) == 1:
-                            if "/" in tokenLIST[0]:
-                                resultLIST.append("({})".format(tokenLIST[0]))
-                        #<ToDo>
-                        #else:
-                            #一字一字查詢
-                        #</ToDo>
-                        tokenLIST = []
+                    if len(tokenLIST) > 1:
+                        resultLIST.append("({})".format("/".join(tokenLIST)))
+                    elif len(tokenLIST) == 1:
+                        if "/" in tokenLIST[0]:
+                            resultLIST.append("({})".format(tokenLIST[0]))
+                        else:
+                            resultLIST.append("{}".format(tokenLIST[0]))
+                    else:
+                        pass
+                    tokenLIST = []
                 else:
                     wordLIST = []
                     tokenLIST = []
@@ -209,8 +209,8 @@ if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     #inputSTR = "阮真歡迎 Ta̍k-ke 做伙來做台灣語言"
     #inputSTR = "台語線頂字典主要 le-ê 用途是"
-    #inputSTR = "台灣語言,大寒時節ê台語線頂字典"
-    inputSTR = "大寒時節"
+    inputSTR = "台灣語言,大寒時節ê台語線頂字典"
+    #inputSTR = "大寒時節"
     articutTaigi = ArticutTG()
     resultDICT = articutTaigi.parse(inputSTR, level="lv3", convert="TL")
     pprint(resultDICT)

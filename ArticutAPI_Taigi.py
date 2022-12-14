@@ -83,8 +83,14 @@ class ArticutTG:
 
 
 if __name__ == "__main__":
+    with open("./account.info", "r", encoding="utf-8") as f:
+        try:
+            accountDICT = json.load(f)
+        except json.decoder.JSONDecodeError:
+            accountDICT = {"username":"", "apikey":""}
+
     #台語漢字 CWS/POS TEST
-    inputSTR = "你ē-sái請逐家提供字句hō͘你做試驗。"
-    articutTaigi = ArticutTG()
+    inputSTR = "你ē-sái請逐家提供字句hō͘你做這個試驗。"
+    articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR)
     pprint(resultDICT)

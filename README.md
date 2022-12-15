@@ -1,5 +1,7 @@
 # ArticutAPI_Taigi
 
+# This Project is Still Under Development!
+
 基於 Articut，ArticutAPI_Taigi 是專供台語文使用的斷詞/詞性標記/命名實體辨識 NLP 工具。
 
 Taigi CWS/POS/NER natural language processing tool with Articut as kernel.

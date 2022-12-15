@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from ArticutAPI import Articut
-from glob import iglob
 import json
-from pprint import pprint
+import platform
 import re
 import tempfile
+
+from ArticutAPI import Articut
+from glob import iglob
+from pprint import pprint
+
 
 class ArticutTG:
     def __init__(self, username="", apikey=""):
@@ -43,8 +46,10 @@ class ArticutTG:
                 self.userDefinedDICT[POS] = list(set(self.userDefinedDICT[POS]))
             except FileNotFoundError:
                 pass
-
-        self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+")
+        if platform.system() == "Windows":
+            self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+", delete=False)
+        else:
+            self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+")
         json.dump(self.userDefinedDICT, self.userDefinedDictFILE)
         self.userDefinedDictFILE.flush()
 

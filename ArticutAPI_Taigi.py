@@ -5,6 +5,7 @@ import json
 import platform
 import re
 import tempfile
+import unicodedata
 
 from ArticutAPI import Articut
 from glob import iglob
@@ -22,6 +23,12 @@ class ArticutTG:
             self.userDefinedDICT[i.split("/")[-1].replace(".json", "")] = json.load(open("{}".format(i), encoding="utf-8"))
 
         for i in iglob("./my_dict/*.json"):
+            myDICT = json.load(open(i))
+            if myDICT == []:
+                pass
+            else:
+                for k in self.userDefinedDICT.keys():
+                    self.userDefinedDICT[k] = list(set(self.userDefinedDICT[k])-set(myDICT))
             POS = i.split("/")[-1].replace(".json", "")
             if POS in self.userDefinedDICT.keys():
                 pass
@@ -88,7 +95,9 @@ class ArticutTG:
         resultLIST = []
         for p in posLIST: #p 是一句
             for word in p:
-                if word["text"] in [token[2] for token in self.moeCSV]:
+                if "LATIN" in unicodedata.name(word["text"][0]):
+                    resultLIST.append(word["text"])
+                elif word["text"] in [token[2] for token in self.moeCSV]:
                     tokenLIST = []
                     for token in self.moeCSV[1:]:
                         if token[2] == word["text"]:
@@ -165,10 +174,11 @@ class ArticutTG:
             tgLV = level
         #Todo: Add some Preprocessing here.
         articutResultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.userDefinedDictFILE.name)
-
+        print(articutResultDICT)
         POScandidateLIST = []
         for tkn in articutResultDICT["result_segmentation"].split("/"):
             for k in self.userDefinedDICT.keys():
+                print(k)
                 if tkn in self.userDefinedDICT[k]:
                     POScandidateLIST.append(("<UserDefined>{}</UserDefined>".format(tkn), "<{0}>{1}</{0}>".format(k, tkn)))
 
@@ -220,5 +230,5 @@ if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請逐家提供字句hō͘你做這個試驗。"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
-    resultDICT = articutTaigi.parse(inputSTR)
+    resultDICT = articutTaigi.parse(inputSTR, level="lv3")
     pprint(resultDICT)

@@ -174,11 +174,9 @@ class ArticutTG:
             tgLV = level
         #Todo: Add some Preprocessing here.
         articutResultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.userDefinedDictFILE.name)
-        print(articutResultDICT)
         POScandidateLIST = []
         for tkn in articutResultDICT["result_segmentation"].split("/"):
             for k in self.userDefinedDICT.keys():
-                print(k)
                 if tkn in self.userDefinedDICT[k]:
                     POScandidateLIST.append(("<UserDefined>{}</UserDefined>".format(tkn), "<{0}>{1}</{0}>".format(k, tkn)))
 

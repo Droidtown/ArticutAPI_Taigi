@@ -227,6 +227,7 @@ if __name__ == "__main__":
 
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請逐家提供字句hō͘你做這個試驗。"
+    inputSTR = "送小妹你"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
-    resultDICT = articutTaigi.parse(inputSTR, level="lv3")
+    resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)

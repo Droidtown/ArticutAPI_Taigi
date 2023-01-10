@@ -16,11 +16,13 @@ class ArticutTG:
     def __init__(self, username="", apikey=""):
         self.articut = Articut(username=username, apikey=apikey)
         self.posPat = re.compile("<[^<]*>([^<]*)</([^<]*)>")
+        self.TLPat = re.compile("[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*")
         self.userDefinedDICT = {}
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
         self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("./moe_dict/詞目總檔.csv", "r", encoding="utf-8").readlines()]
         for i in iglob("./moe_dict/*.json"):
-            self.userDefinedDICT[i.split("/")[-1].replace(".json", "")] = json.load(open("{}".format(i), encoding="utf-8"))
+            key = i.split("/")[-1].replace(".json", "")
+            self.userDefinedDICT[key] = json.load(open("{}".format(i), encoding="utf-8"))
 
         for i in iglob("./my_dict/*.json"):
             myDICT = json.load(open(i))
@@ -158,6 +160,24 @@ class ArticutTG:
         #resultLIST = []
         #return resultLIST
 #</ToDo>
+    def _mixedInputDetector(self, inputSTR):
+        print(self.TLPat.finditer(inputSTR))
+        TLLIST = [t.group() for t in self.TLPat.finditer(inputSTR)]
+        if TLLIST == []:
+            pass
+        else:
+            with open(self.userDefinedDictFILE.name) as f:
+                userDefinedDICT = json.load(f)
+            if "_ArticutTaigiUserDefined" in userDefinedDICT.keys():
+                userDefinedDICT["_ArticutTaigiUserDefined"].extend(TLLIST)
+            else:
+                userDefinedDICT["_ArticutTaigiUserDefined"] = TLLIST
+            if platform.system() == "Windows":
+                self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+", delete=False)
+            else:
+                self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+")
+            json.dump(userDefinedDICT, self.userDefinedDictFILE)
+            self.userDefinedDictFILE.flush()
 
     def parse(self, inputSTR, level="lv2", convert=None):
         if level=="lv3":
@@ -173,7 +193,9 @@ class ArticutTG:
         else:
             tgLV = level
         #Todo: Add some Preprocessing here.
+        self._mixedInputDetector(inputSTR)
         articutResultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.userDefinedDictFILE.name)
+
         POScandidateLIST = []
         for tkn in articutResultDICT["result_segmentation"].split("/"):
             for k in self.userDefinedDICT.keys():
@@ -226,8 +248,7 @@ if __name__ == "__main__":
             accountDICT = {"username":"", "apikey":""}
 
     #台語漢字 CWS/POS TEST
-    inputSTR = "你ē-sái請逐家提供字句hō͘你做這個試驗。"
-    inputSTR = "送小妹你"
+    inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)

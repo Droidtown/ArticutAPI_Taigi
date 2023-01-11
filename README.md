@@ -6,7 +6,7 @@
 
 Taigi CWS/POS/NER natural language processing tool with Articut as kernel.
 
-## I. 基本斷詞/POS/NER操作
+## I. 基本操作：斷詞(WS)/詞性標記(POS)/命名實體辨識(NER)
 
 ```python
 from ArticutAPI_Taigi import ArticutTG
@@ -39,7 +39,7 @@ pprint(resultDICT)
 
 ```
 ---
-## II. 進階白話字轉台羅拼音操作
+## II. 進階操作：白話字轉台羅拼音
 ```python
 from ArticutAPI_Taigi import ArticutTG
 from pprint import pprint

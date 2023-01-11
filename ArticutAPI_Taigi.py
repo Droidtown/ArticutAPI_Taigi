@@ -161,7 +161,6 @@ class ArticutTG:
         #return resultLIST
 #</ToDo>
     def _mixedInputDetector(self, inputSTR):
-        print(self.TLPat.finditer(inputSTR))
         TLLIST = [t.group() for t in self.TLPat.finditer(inputSTR)]
         if TLLIST == []:
             pass
@@ -249,6 +248,7 @@ if __name__ == "__main__":
 
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
+    inputSTR = "hit-ê META ê 頭家 Zuckerberg 母湯按捏"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)

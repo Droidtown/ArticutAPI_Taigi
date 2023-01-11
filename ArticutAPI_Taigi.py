@@ -162,11 +162,32 @@ class ArticutTG:
 #</ToDo>
     def _mixedInputDetector(self, inputSTR):
         TLLIST = [t.group() for t in self.TLPat.finditer(inputSTR)]
+        with open(self.userDefinedDictFILE.name) as f:
+            userDefinedDICT = json.load(f)
+
+        #<封印的區塊：如果使用者有購買英文版 Articut 的使用額度，可調用英文人名偵測>
+        usernameENG = ""
+        apikeyENG = ""
+        articutENG = Articut(username=usernameENG, apikey=apikeyENG, url="https://nlu.droidtown.co")
+        knownLIST = []
+        for i in TLLIST:
+            resultDICT = articutENG.parse(i, level="lv1")
+            if resultDICT["status"] == True and resultDICT["msg"] == "Success!":
+                if "<ENTITY_person>{}</ENTITY_person>".format(i) in "".join(resultDICT["result_pos"]):
+                    knownLIST.append(i)
+                    userDefinedDICT["ENTITY_person"].append(i)
+                    self.userDefinedDICT["ENTITY_person"].append(i)
+            else:
+                pass
+        TLLIST = list(set(TLLIST)-set(knownLIST))
+
+        #</封印的區塊：如果使用者有購買英文版 Articut 的使用額度，可調用英文人名偵測>
+
         if TLLIST == []:
             pass
         else:
-            with open(self.userDefinedDictFILE.name) as f:
-                userDefinedDICT = json.load(f)
+            #with open(self.userDefinedDictFILE.name) as f:
+                #userDefinedDICT = json.load(f)
             if "_ArticutTaigiUserDefined" in userDefinedDICT.keys():
                 userDefinedDICT["_ArticutTaigiUserDefined"].extend(TLLIST)
             else:

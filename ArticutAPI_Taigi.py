@@ -42,7 +42,7 @@ class ArticutTG:
 
         for POS in self.userDefinedDICT.keys():
             try:
-                posLIST = json.load(open("./my_dict/{}.json".format(POS), encoding="utf-8"))
+                posLIST = json.load(open("{}/my_dict/{}.json".format(BASEPATH, POS), encoding="utf-8"))
                 tmpLIST = []
                 for p in posLIST:
                     if re.search(self.cjkPAT, p.strip()):

@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import json
+import os
 import platform
 import re
 import tempfile
@@ -11,20 +12,22 @@ from ArticutAPI import Articut
 from glob import iglob
 from pprint import pprint
 
+BASEPATH = os.path.dirname(os.path.abspath(__file__))
 
 class ArticutTG:
-    def __init__(self, username="", apikey=""):
+    def __init__(self, username="", apikey="", usernameENG="", apikeyENG=""):
         self.articut = Articut(username=username, apikey=apikey)
+        self.articutENG = Articut(username=usernameENG, apikey=apikeyENG, url="https://nlu.droidtown.co")
         self.posPat = re.compile("<[^<]*>([^<]*)</([^<]*)>")
         self.TLPat = re.compile("[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*")
         self.userDefinedDICT = {}
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
         self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("./moe_dict/詞目總檔.csv", "r", encoding="utf-8").readlines()]
-        for i in iglob("./moe_dict/*.json"):
+        for i in iglob("{}/moe_dict/*.json".format(BASEPATH)):
             key = i.split("/")[-1].replace(".json", "")
             self.userDefinedDICT[key] = json.load(open("{}".format(i), encoding="utf-8"))
 
-        for i in iglob("./my_dict/*.json"):
+        for i in iglob("{}/my_dict/*.json".format(BASEPATH)):
             myDICT = json.load(open(i))
             if myDICT == []:
                 pass
@@ -166,12 +169,9 @@ class ArticutTG:
             userDefinedDICT = json.load(f)
 
         #<封印的區塊：如果使用者有購買英文版 Articut 的使用額度，可調用英文人名偵測>
-        usernameENG = ""
-        apikeyENG = ""
-        articutENG = Articut(username=usernameENG, apikey=apikeyENG, url="https://nlu.droidtown.co")
         knownLIST = []
         for i in TLLIST:
-            resultDICT = articutENG.parse(i, level="lv1")
+            resultDICT = self.articutENG.parse(i, level="lv1")
             if resultDICT["status"] == True and resultDICT["msg"] == "Success!":
                 if "<ENTITY_person>{}</ENTITY_person>".format(i) in "".join(resultDICT["result_pos"]):
                     knownLIST.append(i)
@@ -261,7 +261,7 @@ class ArticutTG:
 
 
 if __name__ == "__main__":
-    with open("./account.info", "r", encoding="utf-8") as f:
+    with open("{}/account.info".format(BASEPATH), "r", encoding="utf-8") as f:
         try:
             accountDICT = json.load(f)
         except json.decoder.JSONDecodeError:

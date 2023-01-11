@@ -22,7 +22,7 @@ class ArticutTG:
         self.TLPat = re.compile("[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*")
         self.userDefinedDICT = {}
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
-        self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("./moe_dict/詞目總檔.csv", "r", encoding="utf-8").readlines()]
+        self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
         for i in iglob("{}/moe_dict/*.json".format(BASEPATH)):
             key = i.split("/")[-1].replace(".json", "")
             self.userDefinedDICT[key] = json.load(open("{}".format(i), encoding="utf-8"))

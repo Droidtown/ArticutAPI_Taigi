@@ -201,10 +201,27 @@ class ArticutTG:
         return None
 
     def _spaceWalker(self, inputDICT):
-        posLIST = inputDICT["result_pos"]
-        posPat = re.compile("\s</UserDefined>")
-        for i in posLIST:
+        '''
+        移除非 CJK 字元前後的空格
+        '''
+        fposPat = re.compile("<UserDefined>\s")
+        pposPat = re.compile("\s</UserDefined>")
+        posPat = re.compile("</?\w_?[^>]+?>")
+        for i in range(0, len(inputDICT["result_pos"])):
+            inputDICT["result_pos"][i] = re.sub(fposPat, " <UserDefined>", inputDICT["result_pos"][i])
+            inputDICT["result_pos"][i] = re.sub(pposPat, "</UserDefined> ", inputDICT["result_pos"][i])
 
+        #for i in range(0, len(inputDICT["result_obj"])):
+            #for j in range(0, len(inputDICT["result_pos"][i])):
+                #inputDICT["result_obj"][i][j] = re.sub(fposPat, " <UserDefined>", inputDICT["result_obj"][i][j])
+                #inputDICT["result_obj"][i][j] = re.sub(pposPat, "</UserDefined> ", inputDICT["result_obj"][i][j])
+
+        tmpSTR = ""
+        for i in range(0, len(inputDICT["result_pos"])):
+            tmpSTR = tmpSTR + re.sub(posPat, "<DROIDTOWN_TKBD>", inputDICT["result_pos"][i])
+            tmpSTR = tmpSTR.replace("<DROIDTOWN_TKBD><DROIDTOWN_TKBD>", "/").replace("<DROIDTOWN_TKBD> <DROIDTOWN_TKBD>", "/ /").replace("<DROIDTOWN_TKBD>", "/")
+        inputDICT["result_segmentation"] = tmpSTR
+        return inputDICT
 
     def parse(self, inputSTR, level="lv2", convert=None):
         if level=="lv3":
@@ -222,7 +239,7 @@ class ArticutTG:
         #Todo: Add some Preprocessing here.
         self._mixedInputDetector(inputSTR)
         articutResultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.userDefinedDictFILE.name)
-
+        articutResultDICT = self._spaceWalker(articutResultDICT)
         POScandidateLIST = []
         for tkn in articutResultDICT["result_segmentation"].split("/"):
             for k in self.userDefinedDICT.keys():
@@ -276,7 +293,7 @@ if __name__ == "__main__":
 
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
-    inputSTR = "hit-ê META ê 頭家 Zuckerberg 母湯按捏"
+    inputSTR = "hit-ê META ê 頭家 Zuckerberg 母湯按捏, 你ē-sái請ta̍k-ke提供字句hō͘ 你做這個試驗。"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
-    pprint(resultDICT)
+    print(resultDICT)

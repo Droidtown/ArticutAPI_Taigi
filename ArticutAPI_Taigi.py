@@ -19,7 +19,7 @@ class ArticutTG:
         self.articut = Articut(username=username, apikey=apikey)
         self.articutENG = Articut(username=usernameENG, apikey=apikeyENG, url="https://nlu.droidtown.co")
         self.posPat = re.compile("<[^<]*>([^<]*)</([^<]*)>")
-        self.TLPat = re.compile("[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*")
+        self.TLPat = re.compile("\s?[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*\s?")
         self.userDefinedDICT = {}
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
         self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
@@ -198,6 +198,13 @@ class ArticutTG:
                 self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+")
             json.dump(userDefinedDICT, self.userDefinedDictFILE)
             self.userDefinedDictFILE.flush()
+        return None
+
+    def _spaceWalker(self, inputDICT):
+        posLIST = inputDICT["result_pos"]
+        posPat = re.compile("\s</UserDefined>")
+        for i in posLIST:
+
 
     def parse(self, inputSTR, level="lv2", convert=None):
         if level=="lv3":

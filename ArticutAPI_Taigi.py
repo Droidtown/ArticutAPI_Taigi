@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import json
+import os
 import platform
 import re
 import tempfile
@@ -11,20 +12,22 @@ from ArticutAPI import Articut
 from glob import iglob
 from pprint import pprint
 
+BASEPATH = os.path.dirname(os.path.abspath(__file__))
 
 class ArticutTG:
-    def __init__(self, username="", apikey=""):
+    def __init__(self, username="", apikey="", usernameENG="", apikeyENG=""):
         self.articut = Articut(username=username, apikey=apikey)
+        self.articutENG = Articut(username=usernameENG, apikey=apikeyENG, url="https://nlu.droidtown.co")
         self.posPat = re.compile("<[^<]*>([^<]*)</([^<]*)>")
-        self.TLPat = re.compile("[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*")
+        self.TLPat = re.compile("\s?[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*\s?")
         self.userDefinedDICT = {}
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
-        self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("./moe_dict/詞目總檔.csv", "r", encoding="utf-8").readlines()]
-        for i in iglob("./moe_dict/*.json"):
+        self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
+        for i in iglob("{}/moe_dict/*.json".format(BASEPATH)):
             key = i.split("/")[-1].replace(".json", "")
             self.userDefinedDICT[key] = json.load(open("{}".format(i), encoding="utf-8"))
 
-        for i in iglob("./my_dict/*.json"):
+        for i in iglob("{}/my_dict/*.json".format(BASEPATH)):
             myDICT = json.load(open(i))
             if myDICT == []:
                 pass
@@ -39,7 +42,7 @@ class ArticutTG:
 
         for POS in self.userDefinedDICT.keys():
             try:
-                posLIST = json.load(open("./my_dict/{}.json".format(POS), encoding="utf-8"))
+                posLIST = json.load(open("{}/my_dict/{}.json".format(BASEPATH, POS), encoding="utf-8"))
                 tmpLIST = []
                 for p in posLIST:
                     if re.search(self.cjkPAT, p.strip()):
@@ -161,13 +164,30 @@ class ArticutTG:
         #return resultLIST
 #</ToDo>
     def _mixedInputDetector(self, inputSTR):
-        print(self.TLPat.finditer(inputSTR))
         TLLIST = [t.group() for t in self.TLPat.finditer(inputSTR)]
+        with open(self.userDefinedDictFILE.name) as f:
+            userDefinedDICT = json.load(f)
+
+        #<封印的區塊：如果使用者有購買英文版 Articut 的使用額度，可調用英文人名偵測>
+        knownLIST = []
+        for i in TLLIST:
+            resultDICT = self.articutENG.parse(i, level="lv1")
+            if resultDICT["status"] == True and resultDICT["msg"] == "Success!":
+                if "<ENTITY_person>{}</ENTITY_person>".format(i) in "".join(resultDICT["result_pos"]):
+                    knownLIST.append(i)
+                    userDefinedDICT["ENTITY_person"].append(i)
+                    self.userDefinedDICT["ENTITY_person"].append(i)
+            else:
+                pass
+        TLLIST = list(set(TLLIST)-set(knownLIST))
+
+        #</封印的區塊：如果使用者有購買英文版 Articut 的使用額度，可調用英文人名偵測>
+
         if TLLIST == []:
             pass
         else:
-            with open(self.userDefinedDictFILE.name) as f:
-                userDefinedDICT = json.load(f)
+            #with open(self.userDefinedDictFILE.name) as f:
+                #userDefinedDICT = json.load(f)
             if "_ArticutTaigiUserDefined" in userDefinedDICT.keys():
                 userDefinedDICT["_ArticutTaigiUserDefined"].extend(TLLIST)
             else:
@@ -178,6 +198,13 @@ class ArticutTG:
                 self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+")
             json.dump(userDefinedDICT, self.userDefinedDictFILE)
             self.userDefinedDictFILE.flush()
+        return None
+
+    def _spaceWalker(self, inputDICT):
+        posLIST = inputDICT["result_pos"]
+        posPat = re.compile("\s</UserDefined>")
+        for i in posLIST:
+
 
     def parse(self, inputSTR, level="lv2", convert=None):
         if level=="lv3":
@@ -241,7 +268,7 @@ class ArticutTG:
 
 
 if __name__ == "__main__":
-    with open("./account.info", "r", encoding="utf-8") as f:
+    with open("{}/account.info".format(BASEPATH), "r", encoding="utf-8") as f:
         try:
             accountDICT = json.load(f)
         except json.decoder.JSONDecodeError:
@@ -249,6 +276,7 @@ if __name__ == "__main__":
 
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
+    inputSTR = "hit-ê META ê 頭家 Zuckerberg 母湯按捏"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)

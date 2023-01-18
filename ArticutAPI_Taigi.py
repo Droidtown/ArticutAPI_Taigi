@@ -210,11 +210,8 @@ class ArticutTG:
         for i in range(0, len(inputDICT["result_pos"])):
             inputDICT["result_pos"][i] = re.sub(fposPat, " <UserDefined>", inputDICT["result_pos"][i])
             inputDICT["result_pos"][i] = re.sub(pposPat, "</UserDefined> ", inputDICT["result_pos"][i])
-
-        #for i in range(0, len(inputDICT["result_obj"])):
-            #for j in range(0, len(inputDICT["result_pos"][i])):
-                #inputDICT["result_obj"][i][j] = re.sub(fposPat, " <UserDefined>", inputDICT["result_obj"][i][j])
-                #inputDICT["result_obj"][i][j] = re.sub(pposPat, "</UserDefined> ", inputDICT["result_obj"][i][j])
+            inputDICT["result_pos"][i] = inputDICT["result_pos"][i].strip()
+        inputDICT["result_pos"].remove("")
 
         tmpSTR = ""
         for i in range(0, len(inputDICT["result_pos"])):
@@ -296,4 +293,6 @@ if __name__ == "__main__":
     inputSTR = "hit-ê META ê 頭家 Zuckerberg 母湯按捏, 你ē-sái請ta̍k-ke提供字句hō͘ 你做這個試驗。"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
-    print(resultDICT)
+    print(resultDICT["result_pos"])
+    print(resultDICT["result_segmentation"])
+    pprint(resultDICT["result_obj"])

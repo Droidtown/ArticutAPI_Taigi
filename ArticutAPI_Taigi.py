@@ -211,7 +211,10 @@ class ArticutTG:
             inputDICT["result_pos"][i] = re.sub(fposPat, " <UserDefined>", inputDICT["result_pos"][i])
             inputDICT["result_pos"][i] = re.sub(pposPat, "</UserDefined> ", inputDICT["result_pos"][i])
             inputDICT["result_pos"][i] = inputDICT["result_pos"][i].strip()
-        inputDICT["result_pos"].remove("")
+        try:
+            inputDICT["result_pos"].remove("")
+        except:
+            pass
 
         tmpSTR = ""
         for i in range(0, len(inputDICT["result_pos"])):
@@ -282,17 +285,18 @@ class ArticutTG:
 
 
 if __name__ == "__main__":
-    with open("{}/account.info".format(BASEPATH), "r", encoding="utf-8") as f:
-        try:
-            accountDICT = json.load(f)
-        except json.decoder.JSONDecodeError:
-            accountDICT = {"username":"", "apikey":""}
-
+    #with open("{}/account.info".format(BASEPATH), "r", encoding="utf-8") as f:
+        #try:
+            #accountDICT = json.load(f)
+        #except json.decoder.JSONDecodeError:
+            #accountDICT = {"username":"", "apikey":""}
+    accountDICT = {"username":"", "apikey":""}
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
-    inputSTR = "hit-ê META ê 頭家 Zuckerberg 母湯按捏, 你ē-sái請ta̍k-ke提供字句hō͘ 你做這個試驗。"
+    inputSTR = "hit-ê"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     print(resultDICT["result_pos"])
     print(resultDICT["result_segmentation"])
     pprint(resultDICT["result_obj"])
+    print(resultDICT)

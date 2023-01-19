@@ -2,9 +2,22 @@
 
 # This Project is Still Under Development!
 
-基於 Articut，ArticutAPI_Taigi 是專供台語文使用的斷詞/詞性標記/命名實體辨識 NLP 工具。
+基於卓騰語言科技研發的 Articut 中文 NLP 系統，ArticutAPI_Taigi 是專供台語文使用的斷詞/詞性標記/命名實體辨識 NLP 工具。
 
 Taigi CWS/POS/NER natural language processing tool with Articut as kernel.
+
+### 主要功能：
+- 全白話字斷詞暨詞性/NER 標記  (e.g., "歡迎逐家做伙來做台灣語言")
+- 全台羅拼音斷詞暨詞性/NER 標記 (e.g., "huan-gîng ta̍k-ke tsò-hué lâi tsò tâi-uan gí-giân")
+- 白話字台羅拼音混打斷詞暨詞性/NER 標記 (e.g., 歡迎ta̍k-ke做伙來做 tâi-uan 語言")
+
+### 進階功能：
+- 白話字轉譯台羅拼音
+- 台羅拼音轉譯白話字 (施作工…)
+
+### 網頁操作介面：
+[國立清華大學語言學研究所:: 本土語言斷詞系統](https://taiwan-lingu.ist/segmentation/)
+
 
 ## I. 基本操作：斷詞(WS)/詞性標記(POS)/命名實體辨識(NER)
 

@@ -13,7 +13,7 @@ Taigi CWS/POS/NER natural language processing tool with Articut as kernel.
 
 ### 進階功能：
 - 白話字轉譯台羅拼音
-- 台羅拼音轉譯白話字 (施作工…)
+- 台羅拼音轉譯白話字 (施作中…)
 
 ### 網頁操作介面：
 [國立清華大學語言學研究所:: 本土語言斷詞系統](https://taiwan-lingu.ist/segmentation/)

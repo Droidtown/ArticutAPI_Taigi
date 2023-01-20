@@ -1,8 +1,8 @@
 # ArticutAPI_Taigi (文截台語 NLP 工具)
 
-基於[卓騰語言科技](https://api.droidtown.co) 研發的 <u>Articut 中文 NLP 系統</u>，**ArticutAPI_Taigi** 是專供台語文使用的斷詞/詞性標記/命名實體辨識 NLP 工具。
+基於 [卓騰語言科技](https://api.droidtown.co) 研發的 <u>Articut 中文 NLP 系統</u>，**ArticutAPI_Taigi** 是專供台語文使用的斷詞/詞性標記/命名實體辨識 NLP 工具。
 
-由於 **Articut_Taigi** 是基於 Articut 開發的台語文 NLP 工具，它的免費字數即直接受益於卓騰語言科技提供 Articut NLP 系統使用者的 2000 字/小時。但因 Articut 計算字數時不會將字典詞彙計入，再加上 **Articut_Taigi** 的台語文功能有很大一部份是依賴台文字典實現的，因此實際上使用的字數會比較少。
+由於 **Articut_Taigi** 是基於 Articut 開發的台語文 NLP 工具，它的免費字數即直接受益於卓騰語言科技提供 Articut NLP 系統使用者的 2000 字/小時。此外，因 Articut 計算字數時不會將字典詞彙計入，而 **Articut_Taigi** 的台語文功能有很大一部份是依賴台文字典實現的，因此實際上消耗的字數會比較少。
 
 若 2000 字/小時的免費額度不夠您的需求使用的話，可自行採購 Articut 的字數額度，取得其 API key 即可使用。我相信絕大多數的情況下，[300 元(十萬字)] 的方案就已經相當夠使用了。([採購連結](https://api.droidtown.co/product/) )
 

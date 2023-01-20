@@ -1,10 +1,14 @@
-# ArticutAPI_Taigi
+# ArticutAPI_Taigi (文截台語 NLP 工具)
 
-# This Project is Still Under Development!
+基於卓騰語言科技研發的 <u>Articut 中文 NLP 系統</u>，**ArticutAPI_Taigi** 是專供台語文使用的斷詞/詞性標記/命名實體辨識 NLP 工具。
 
-基於卓騰語言科技研發的 Articut 中文 NLP 系統，ArticutAPI_Taigi 是專供台語文使用的斷詞/詞性標記/命名實體辨識 NLP 工具。
+由於 **Articut_Taigi** 是基於 Articut 開發的台語文 NLP 工具，它的免費字數即直接取用 Articut 的 2000 字/小時。但因 Articut 計算字數時不會將字典詞彙計入，再加上 **Articut_Taigi** 的台語文功能有很大一部份是依賴台文字典實現的，因此實際上使用的字數會比較少。
 
-Taigi CWS/POS/NER natural language processing tool with Articut as kernel.
+若 2000 字/小時的免費額度不夠您的需求使用的話，可自行採購 Articut 的字數額度，取得其 API key 即可使用。([採購連結](https://api.droidtown.co/product/) )
+
+即便是台灣最多人使用的國語，放在商業現實的「中國普通話」面前都算是沒什麼市場價值的小語種，就更別提台閩語、客語、南島語…等本土語言了。因此這些本土語言的 NLP 工具的開發有賴個人支持。我也只能在工餘的時間盡力貢獻。
+
+若您有意贊助 **Articut_Taigi (文截台語 NLP  工具)** 及其後各種台灣本土語言 NLP 工具 (e.g., Articut_Hakka, Articut_Amis, ... 等) 的開發，歡迎直接贊助開發者本人小弟在下我： [http://paypal.me/donatepeterwolf](http://paypal.me/donatepeterwolf) 。
 
 ### 主要功能：
 - 全白話字斷詞暨詞性/NER 標記  (e.g., "歡迎逐家做伙來做台灣語言")

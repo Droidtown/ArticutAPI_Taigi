@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
 import json
@@ -9,6 +9,7 @@ import tempfile
 import unicodedata
 
 from ArticutAPI import Articut
+from dict import Taigi_Lexicon
 from glob import iglob
 from pprint import pprint
 
@@ -22,48 +23,8 @@ class ArticutTG:
         self.TLPat = re.compile("\s?[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*\s?")
         self.userDefinedDICT = {}
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
-        self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
-        for i in iglob("{}/moe_dict/*.json".format(BASEPATH)):
-            key = i.split("/")[-1].replace(".json", "")
-            self.userDefinedDICT[key] = json.load(open("{}".format(i), encoding="utf-8"))
-
-        for i in iglob("{}/my_dict/*.json".format(BASEPATH)):
-            myDICT = json.load(open(i))
-            if myDICT == []:
-                pass
-            else:
-                for k in self.userDefinedDICT.keys():
-                    self.userDefinedDICT[k] = list(set(self.userDefinedDICT[k])-set(myDICT))
-            POS = i.split("/")[-1].replace(".json", "")
-            if POS in self.userDefinedDICT.keys():
-                pass
-            else:
-                self.userDefinedDICT[POS] = []
-
-        for POS in self.userDefinedDICT.keys():
-            try:
-                posLIST = json.load(open("{}/my_dict/{}.json".format(BASEPATH, POS), encoding="utf-8"))
-                tmpLIST = []
-                for p in posLIST:
-                    if re.search(self.cjkPAT, p.strip()):
-                        tmpLIST.append(p.strip())
-                    else:
-                        for w in (p.strip().lower(), p.strip().upper(), p.strip().title(), p.strip().capitalize(), p.strip()):
-                            tmpLIST.append(" {}".format(w))
-                            tmpLIST.append("{} ".format(w))
-                            tmpLIST.append(" {} ".format(w))
-                            tmpLIST.append("{}".format(w))
-                if tmpLIST != []:
-                    self.userDefinedDICT[POS].extend(tmpLIST)
-                self.userDefinedDICT[POS] = list(set(self.userDefinedDICT[POS]))
-            except FileNotFoundError:
-                pass
-        if platform.system() == "Windows":
-            self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+", delete=False)
-        else:
-            self.userDefinedDictFILE = tempfile.NamedTemporaryFile(mode="w+")
-        json.dump(self.userDefinedDICT, self.userDefinedDictFILE)
-        self.userDefinedDictFILE.flush()
+        self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/dict/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
+        self.defaultDICT = Taigi_Lexicon.dictCombiner()
 
     def _pos2Obj(self, posLIST):
         resultLIST = []
@@ -165,10 +126,11 @@ class ArticutTG:
 #</ToDo>
     def _mixedInputDetector(self, inputSTR):
         TLLIST = [t.group() for t in self.TLPat.finditer(inputSTR)]
-        with open(self.userDefinedDictFILE.name) as f:
+        with open(self.TaigiDictFILE.name) as f:
             userDefinedDICT = json.load(f)
 
-        #<封印的區塊：如果使用者有購買英文版 Articut 的使用額度，可調用英文人名偵測>
+        #<特殊區塊：如果使用者有購買英文版 Articut 的使用額度，將調用英文人名偵測。>
+        #<否則本功能會在每小時 2000 字免費額度用盡後失效，待下一個小時的免費額度啟用時才恢復>
         knownLIST = []
         for i in TLLIST:
             resultDICT = self.articutENG.parse(i, level="lv1")
@@ -180,8 +142,8 @@ class ArticutTG:
             else:
                 pass
         TLLIST = list(set(TLLIST)-set(knownLIST))
-
-        #</封印的區塊：如果使用者有購買英文版 Articut 的使用額度，可調用英文人名偵測>
+        #</特殊區塊：如果使用者有購買英文版 Articut 的使用額度，將調用英文人名偵測>
+        #</否則本功能會在每小時 2000 字免費額度用盡後失效，待下一個小時的免費額度啟用時才恢復>
 
         if TLLIST == []:
             pass
@@ -223,7 +185,7 @@ class ArticutTG:
         inputDICT["result_segmentation"] = tmpSTR
         return inputDICT
 
-    def parse(self, inputSTR, level="lv2", convert=None):
+    def parse(self, inputSTR, level="lv2", userDefinedDictFILE=None, convert=None):
         if level=="lv3":
             tgLV = "lv3"
             level = "lv2"
@@ -237,8 +199,35 @@ class ArticutTG:
         else:
             tgLV = level
         #Todo: Add some Preprocessing here.
+        if platform.system() == "Windows":
+            self.TaigiDictFILE = tempfile.NamedTemporaryFile(mode="w+", delete=False)
+        else:
+            self.TaigiDictFILE = tempfile.NamedTemporaryFile(mode="w+")
+
+        if userDefinedDictFILE == None:
+            self.userDefinedDICT = self.defaultDICT
+        else:
+            with open(userDefinedDictFILE, encoding="utf-8") as f:
+                userDefinedDICT = json.load(f)
+            for k in userDefinedDICT.keys():
+                try:
+                    tmpLIST = userDefinedDICT[k]
+                    for POS in self.defaultDICT.keys():
+                        tmpLIST = list(set(self.defaultDICT[POS])-set(tmpLIST))
+                    if k in self.userDefinedDICT.keys():
+                        tmpLIST.extend(self.userDefinedDICT[k])
+                    tmpLIST = list(set(tmpLIST))
+                    self.userDefinedDICT[k] = tmpLIST
+                except KeyError:
+                    self.userDefinedDICT[k] = self.defaultDICT[POS]
+
+
+        json.dump( self.userDefinedDICT, self.TaigiDictFILE)
+        self.TaigiDictFILE.flush()
+
+
         self._mixedInputDetector(inputSTR)
-        articutResultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.userDefinedDictFILE.name)
+        articutResultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.TaigiDictFILE.name)
         articutResultDICT = self._spaceWalker(articutResultDICT)
         POScandidateLIST = []
         for tkn in articutResultDICT["result_segmentation"].split("/"):
@@ -293,7 +282,7 @@ if __name__ == "__main__":
     accountDICT = {"username":"", "apikey":""}
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
-    inputSTR = "hit-ê"
+    inputSTR = "廣東"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     print(resultDICT["result_pos"])

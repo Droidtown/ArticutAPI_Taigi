@@ -1,1 +1,1 @@
-DT_ClauseParticle = []
+DT_ClauseParticle = ["嗚呼", "oo-hoo", "--hioh", "--lah", "--neh", "--leh", "--looh", "--lih", "--honnh", "--nih", "--ooh", "--ah", "--mah", "--ê"]

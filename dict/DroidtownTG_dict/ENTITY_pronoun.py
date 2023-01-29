@@ -6,5 +6,6 @@ DT_EntityPronoun = ["逐家",
                     "賤兄",
                     "三哥",
                     "陳公子",
-                    "黃氏"
+                    "黃氏",
+                    "kann-siû", "sió-tī", "lāu--ê", "bóo-lâng", "siánn-lâng", "tsū-ngóo", "pa̍t-lâng", "hit-jiah", "hit-liah", "tī-tāi", "kok-lâng", "ka-kī"
                     ]

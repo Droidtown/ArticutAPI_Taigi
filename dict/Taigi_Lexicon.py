@@ -28,6 +28,7 @@ try:
     from DroidtownTG_dict.ASPECT import DT_Aspect
     from DroidtownTG_dict.AUX import DT_Aux
     from DroidtownTG_dict.CLAUSE_particle import DT_ClauseParticle
+    from DroidtownTG_dict.CLAUSE_Q import DT_ClauseQ
     from DroidtownTG_dict.ENTITY_classifier import DT_EntityClassifier
     from DroidtownTG_dict.ENTITY_DetPhrase import DT_EntityDetPhrase
     from DroidtownTG_dict.ENTITY_measurement import DT_EntityMeasurement
@@ -69,6 +70,7 @@ except:
     from .DroidtownTG_dict.ASPECT import DT_Aspect
     from .DroidtownTG_dict.AUX import DT_Aux
     from .DroidtownTG_dict.CLAUSE_particle import DT_ClauseParticle
+    from .DroidtownTG_dict.CLAUSE_Q import DT_ClauseQ
     from .DroidtownTG_dict.ENTITY_classifier import DT_EntityClassifier
     from .DroidtownTG_dict.ENTITY_DetPhrase import DT_EntityDetPhrase
     from .DroidtownTG_dict.ENTITY_measurement import DT_EntityMeasurement
@@ -149,6 +151,7 @@ def dictCombiner():
               "ASPECT"                : DT_Aspect,
               "AUX"                   : DT_Aux,
               "CLAUSE_particle"       : DT_ClauseParticle,
+              "CLAUSE_Q"              : DT_ClauseQ,
               "ENTITY_classifier"     : DT_EntityClassifier,
               "ENTITY_DetPhrase"      : DT_EntityDetPhrase,
               "ENTITY_measurement"    : DT_EntityMeasurement,

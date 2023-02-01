@@ -198,14 +198,15 @@ class ArticutTG:
                     raise
         else:
             tgLV = level
-        #Todo: Add some Preprocessing here.
+
         if platform.system() == "Windows":
             self.TaigiDictFILE = tempfile.NamedTemporaryFile(mode="w+", delete=False)
         else:
             self.TaigiDictFILE = tempfile.NamedTemporaryFile(mode="w+")
 
+        self.userDefinedDICT = self.defaultDICT
         if userDefinedDictFILE == None:
-            self.userDefinedDICT = self.defaultDICT
+            pass
         else:
             with open(userDefinedDictFILE, encoding="utf-8") as f:
                 userDefinedDICT = json.load(f)
@@ -213,14 +214,13 @@ class ArticutTG:
                 try:
                     tmpLIST = userDefinedDICT[k]
                     for POS in self.defaultDICT.keys():
-                        tmpLIST = list(set(self.defaultDICT[POS])-set(tmpLIST))
+                        self.defaultDICT[POS] = list(set(self.defaultDICT[POS])-set(tmpLIST))
                     if k in self.userDefinedDICT.keys():
                         tmpLIST.extend(self.userDefinedDICT[k])
                     tmpLIST = list(set(tmpLIST))
-                    self.userDefinedDICT[k] = tmpLIST
+                    self.userDefinedDICT[k].extend(tmpLIST)
                 except KeyError:
                     self.userDefinedDICT[k] = self.defaultDICT[POS]
-
 
         json.dump( self.userDefinedDICT, self.TaigiDictFILE)
         self.TaigiDictFILE.flush()
@@ -274,18 +274,9 @@ class ArticutTG:
 
 
 if __name__ == "__main__":
-    #with open("{}/account.info".format(BASEPATH), "r", encoding="utf-8") as f:
-        #try:
-            #accountDICT = json.load(f)
-        #except json.decoder.JSONDecodeError:
-            #accountDICT = {"username":"", "apikey":""}
     accountDICT = {"username":"", "apikey":""}
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
-    inputSTR = "廣東"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
-    print(resultDICT["result_pos"])
-    print(resultDICT["result_segmentation"])
-    pprint(resultDICT["result_obj"])
     print(resultDICT)

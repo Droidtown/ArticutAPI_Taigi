@@ -123,6 +123,7 @@ def dictCombiner():
                     "MODIFIER_color"        : None,
                     "QUANTIFIER"            : None,
                     "RANGE_locality"        : None,
+                    "RANGE_period"          : None,
                     "TIME_justtime"         : None,
                     "TIME_season"           : None
                     }

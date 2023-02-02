@@ -14,6 +14,7 @@
 - 全白話字斷詞暨詞性/NER 標記  (e.g., "歡迎逐家做伙來做台灣語言")
 - 全台羅拼音斷詞暨詞性/NER 標記 (e.g., "huan-gîng ta̍k-ke tsò-hué lâi tsò tâi-uan gí-giân")
 - 白話字台羅拼音混打斷詞暨詞性/NER 標記 (e.g., 歡迎ta̍k-ke做伙來做 tâi-uan 語言")
+- 自訂詞典
 
 ### 進階功能：
 - 白話字轉譯台羅拼音
@@ -55,6 +56,59 @@ pprint(resultDICT)
  'word_count_balance': 1965}
 
 ```
+
+## 使用自訂詞典
+
+**ArticutAPI_Taigi** 支援自訂詞典的設定。詞典需存為一 .json 檔，且內容格式如下：
+
+```json
+{
+    "ACTION_verb"           : [ ], #普通動詞
+    "ACTION_lightVerb"      : [ ], #輕動詞 (e.g., 把、使…)
+    "ACTION_quantifiedVerb" : [ ], #量化動詞 (e.g., 呷看嘜、聽看看…等表示動作只做了輕微嚐試的動詞)
+    "ACTION_eventQuantifier": [ ], #事件量化詞 (e.g., 趟、圈…等表用以計算事件發生次數的詞彙)
+    "ASPECT"                : [ ], #時態標記詞 (e.g., 看過、吃過…等詞中的「過」)
+    "AUX"                   : [ ], #助動詞 (e.g., 為、是…等)
+    "CLAUSE_particle"       : [ ], #語氣詞 (e.g., 啊、嘛…等)
+    "CLAUSE_Q"              : [ ], #疑問詞 (e.g., 嗎、是不是…等)
+    "ENTITY_classifier"     : [ ], #量詞 (e.g., 一部車的「部」、一頭牛的「頭」)
+    "ENTITY_DetPhrase"      : [ ], #冠詞詞組 (e.g., 這個、那位…等)
+    "ENTITY_measurement"    : [ ], #量測詞組 (e.g., 兩公斤、30尺…等)
+    "ENTITY_noun"           : [ ], #普通名詞
+    "ENTITY_num"            : [ ], #數字
+    "ENTITY_person"         : [ ], #人名
+    "ENTITY_possessive"     : [ ], #所有格代名詞 (e.g., 我的、他們的)
+    "ENTITY_pronoun"        : [ ], #代名詞 (e.g., 你、他、哥哥…等)
+    "FUNC_conjunction"      : [ ], #連結詞 (e.g., 和、與…等)
+    "FUNC_degreeHead"       : [ ], #程度詞中心語 (e.g., 很、非常…等)
+    "FUNC_inner"            : [ ], #功能詞，不涉及其它句子存在 (e.g., 的)
+    "FUNC_inter"            : [ ], #功能詞，暗示其它句子存在 (e.g., 而且)
+    "FUNC_negation"         : [ ], #否定詞 (e.g., 不、沒、嘸…等)
+    "IDIOM"                 : [ ], #成語、俚語、俗語
+    "LOCATION"              : [ ], #地名
+    "MODAL"                 : [ ], #情態動詞 (e.g., 會、能…等)
+    "MODIFIER"              : [ ], #形容詞
+    "MODIFIER_color"        : [ ], #顏色形容詞
+    "QUANTIFIER"            : [ ], #量化詞 (e.g., 八成、一些…等)
+    "RANGE_locality"        : [ ], #地點方位詞 (e.g., 附近、旁邊…等)
+    "RANGE_period"        : [ ], #時間方位詞 (e.g., 之前、以後…等)
+    "TIME_justtime"         : [ ], #短時間詞
+    "TIME_season"           : [ ] #季節時間詞
+}
+```
+使用時，只要在 .parse() 中指定字典檔即可：
+
+```python
+from ArticutAPI_Taigi import ArticutTG
+from pprint import pprint
+username = "" #這裡填入您在 https://api.droidtown.co 使用的帳號 email。若使用空字串，則預設使用每小時 2000 字的公用額度。
+apikey   = "" #這裡填入您在 https://api.droidtown.co 登入後取得的 api Key。若使用空字串，則預設使用每小時 2000 字的公用額度。
+articutTG = ArticutTG(username, apikey)
+inputSTR = "歡迎逐家做伙來做台灣語言"
+resultDICT = articutTG.parse(inputSTR, level="lv2", userDefinedDictFILE=""my_dictionary.json") 
+pprint(resultDICT)
+```
+
 ---
 ## II. 進階操作：白話字轉台羅拼音
 ```python

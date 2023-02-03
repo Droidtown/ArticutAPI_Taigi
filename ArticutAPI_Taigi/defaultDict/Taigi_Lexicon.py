@@ -169,7 +169,8 @@ def dictCombiner():
               "MODAL"                 : DT_Modal,
               "MODIFIER"              : DT_Modifier,
               "MODIFIER_color"        : DT_ModifierColor,
-              "QUANTIFIER"            : DT_Quantifier
+              "QUANTIFIER"            : DT_Quantifier,
+              "RANGE_period"          : []
     }
 
 

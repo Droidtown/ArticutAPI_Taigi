@@ -91,7 +91,7 @@ pprint(resultDICT)
     "MODIFIER_color"        : [ ], #顏色形容詞
     "QUANTIFIER"            : [ ], #量化詞 (e.g., 八成、一些…等)
     "RANGE_locality"        : [ ], #地點方位詞 (e.g., 附近、旁邊…等)
-    "RANGE_period"        : [ ], #時間方位詞 (e.g., 之前、以後…等)
+    "RANGE_period"          : [ ], #時間方位詞 (e.g., 之前、以後…等)
     "TIME_justtime"         : [ ], #短時間詞
     "TIME_season"           : [ ] #季節時間詞
 }

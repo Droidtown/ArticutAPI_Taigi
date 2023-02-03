@@ -9,7 +9,7 @@ import tempfile
 import unicodedata
 
 from ArticutAPI import Articut
-from dict import Taigi_Lexicon
+from defaultDict import Taigi_Lexicon
 from glob import iglob
 from pprint import pprint
 
@@ -23,7 +23,7 @@ class ArticutTG:
         self.TLPat = re.compile("\s?[\-a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+(-+[a-zA-Záíúéóàìùèòâîûêôǎǐǔěǒāīūēō̋̍]+)*\s?")
         self.userDefinedDICT = {}
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
-        self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/dict/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
+        self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/defaultDict/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
         self.defaultDICT = Taigi_Lexicon.dictCombiner()
 
     def _pos2Obj(self, posLIST):
@@ -278,5 +278,5 @@ if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
-    resultDICT = articutTaigi.parse(inputSTR, level="lv2")
+    resultDICT = articutTaigi.parse(inputSTR, level="lv2", userDefinedDictFILE=None)
     print(resultDICT)

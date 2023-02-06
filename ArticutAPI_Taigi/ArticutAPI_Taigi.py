@@ -9,7 +9,11 @@ import tempfile
 import unicodedata
 
 from ArticutAPI import Articut
-from defaultDict import Taigi_Lexicon
+try:
+    from .defaultDict import Taigi_Lexicon
+except:
+    from defaultDict import Taigi_Lexicon
+
 from glob import iglob
 from pprint import pprint
 

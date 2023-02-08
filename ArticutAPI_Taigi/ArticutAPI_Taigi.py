@@ -28,6 +28,7 @@ class ArticutTG:
         self.userDefinedDICT = {}
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
         self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/defaultDict/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
+        self.DT_TL = Taigi_Lexicon.DT_TL
         self.defaultDICT = Taigi_Lexicon.dictCombiner()
 
     def _pos2Obj(self, posLIST):
@@ -67,6 +68,8 @@ class ArticutTG:
             for word in p:
                 if "LATIN" in unicodedata.name(word["text"][0]):
                     resultLIST.append(word["text"])
+                elif word["text"] in self.DT_TL:
+                    resultLIST.append(self.DT_TL[word["text"]])
                 elif word["text"] in [token[2] for token in self.moeCSV]:
                     tokenLIST = []
                     for token in self.moeCSV[1:]:
@@ -281,6 +284,7 @@ if __name__ == "__main__":
     accountDICT = {"username":"", "apikey":""}
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
+    inputSTR = "呷飽沒"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
-    resultDICT = articutTaigi.parse(inputSTR, level="lv2", userDefinedDictFILE=None)
+    resultDICT = articutTaigi.parse(inputSTR, level="lv3", userDefinedDictFILE=None)
     print(resultDICT)

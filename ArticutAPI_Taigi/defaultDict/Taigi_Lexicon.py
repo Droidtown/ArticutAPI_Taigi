@@ -46,6 +46,8 @@ try:
     from DroidtownTG_dict.MODIFIER import DT_Modifier
     from DroidtownTG_dict.MODIFIER_color import DT_ModifierColor
     from DroidtownTG_dict.QUANTIFIER import DT_Quantifier
+
+    from DroidtownTG_dict.toTL import DT_TL
 except:
     from .moe_dict.ACTION_verb import moe_ActionVerb
     from .moe_dict.CLAUSE_particle import moe_ClauseParticle
@@ -89,7 +91,7 @@ except:
     from .DroidtownTG_dict.MODIFIER_color import DT_ModifierColor
     from .DroidtownTG_dict.QUANTIFIER import DT_Quantifier
 
-
+    from .DroidtownTG_dict.toTL import DT_TL
 
 def dictCombiner():
     '''
@@ -212,6 +214,7 @@ def dictCombiner():
 
 
     return combinedDICT
+
 
 if __name__ == "__main__":
     combinedDICT = dictCombiner()

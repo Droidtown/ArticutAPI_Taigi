@@ -14,8 +14,7 @@ try:
 except:
     from defaultDict import Taigi_Lexicon
 
-from glob import iglob
-from pprint import pprint
+from posShift import shiftRule
 
 BASEPATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -29,6 +28,7 @@ class ArticutTG:
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
         self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/defaultDict/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
         self.DT_TL = Taigi_Lexicon.DT_TL
+        self.shiftRule = shiftRule
         self.defaultDICT = Taigi_Lexicon.dictCombiner()
 
     def _pos2Obj(self, posLIST):
@@ -192,6 +192,18 @@ class ArticutTG:
         inputDICT["result_segmentation"] = tmpSTR
         return inputDICT
 
+    def _posShift(self, posLIST):
+        for i in range (0, len(posLIST)):
+            if len(posLIST[i]) == 1:
+                pass
+            else:
+                for pat in self.shiftRule:
+                    shiftLIST = [(g.start(), g.end(), g.group(0)) for g in reversed(list(pat[0].finditer(posLIST[i])))]
+                    for s in shiftLIST:
+                        posLIST[i] = "{}{}{}".format(posLIST[i][:s[0]], s[2].replace(pat[1], pat[2]), posLIST[i][s[1]:])
+        return posLIST
+
+
     def parse(self, inputSTR, level="lv2", userDefinedDictFILE=None, convert=None):
         if level=="lv3":
             tgLV = "lv3"
@@ -246,6 +258,8 @@ class ArticutTG:
             for p in POScandidateLIST:
                 articutResultDICT["result_pos"][i] = articutResultDICT["result_pos"][i].replace(p[0],p[1])
 
+        articutResultDICT["result_pos"] = self._posShift(articutResultDICT["result_pos"])
+
         articutResultDICT["result_obj"] = self._pos2Obj(articutResultDICT["result_pos"])
 
         if tgLV in ("lv1", "lv2"):
@@ -284,7 +298,8 @@ if __name__ == "__main__":
     accountDICT = {"username":"", "apikey":""}
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
-    inputSTR = "呷飽沒"
+    inputSTR = "跋倒, 佮意"
+    inputSTR = "紅嬰仔哭甲一身軀汗"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
-    resultDICT = articutTaigi.parse(inputSTR, level="lv3", userDefinedDictFILE=None)
+    resultDICT = articutTaigi.parse(inputSTR, level="lv2", userDefinedDictFILE="./myDict.json")
     print(resultDICT)

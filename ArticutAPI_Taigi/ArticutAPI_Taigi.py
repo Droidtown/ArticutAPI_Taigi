@@ -28,9 +28,10 @@ class ArticutTG:
         self.cjkPAT = re.compile('[\u4e00-\u9fff]')
         self.moeCSV = [[t.replace("\n", "") for t in l.split(",")] for l  in open("{}/defaultDict/moe_dict/詞目總檔.csv".format(BASEPATH), "r", encoding="utf-8").readlines()]
         self.DT_TL = Taigi_Lexicon.DT_TL
+        self.purgePat = re.compile("</\w+(_\w+)?><\w+(_\w+)?>|</?\w+(_\w+)?>")
         self.shiftRule = shiftRule
         self.defaultDICT = Taigi_Lexicon.dictCombiner()
-
+        self.legacyLIST = ["", "𪜶𪹚𫝏𫝘𫝙𫝛𫝞𫝺𫝻𫝾𫞭𫞻𫞼𫟂𫟊𫟧𫠛𫣆"]
     def _pos2Obj(self, posLIST):
         resultLIST = []
         for pos in posLIST:
@@ -200,11 +201,22 @@ class ArticutTG:
                 for pat in self.shiftRule:
                     shiftLIST = [(g.start(), g.end(), g.group(0)) for g in reversed(list(pat[0].finditer(posLIST[i])))]
                     for s in shiftLIST:
-                        posLIST[i] = "{}{}{}".format(posLIST[i][:s[0]], s[2].replace(pat[1], pat[2]), posLIST[i][s[1]:])
+                        adjustedSTR = s[2]
+                        for adjust_s in pat[1]:
+                            adjustedSTR = adjustedSTR.replace(adjust_s, pat[2][pat[1].index(adjust_s)])
+                        posLIST[i] = "{}{}{}".format(posLIST[i][:s[0]], adjustedSTR, posLIST[i][s[1]:])
         return posLIST
 
+    def _pos2Seg(self, posLIST):
+        resultSTR = ""
+        for s in posLIST:
+            resultSTR = resultSTR + re.sub(self.purgePat, "╱", s)
+        return resultSTR
 
     def parse(self, inputSTR, level="lv2", userDefinedDictFILE=None, convert=None):
+        for i in self.legacyLIST[0]:
+            inputSTR = inputSTR.replace(i, self.legacyLIST[1][self.legacyLIST[0].index(i)])
+
         if level=="lv3":
             tgLV = "lv3"
             level = "lv2"
@@ -259,8 +271,8 @@ class ArticutTG:
                 articutResultDICT["result_pos"][i] = articutResultDICT["result_pos"][i].replace(p[0],p[1])
 
         articutResultDICT["result_pos"] = self._posShift(articutResultDICT["result_pos"])
-
         articutResultDICT["result_obj"] = self._pos2Obj(articutResultDICT["result_pos"])
+        articutResultDICT["result_segmentation"] = self._pos2Seg(articutResultDICT["result_pos"])
 
         if tgLV in ("lv1", "lv2"):
             return articutResultDICT
@@ -299,7 +311,7 @@ if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     inputSTR = "跋倒, 佮意"
-    inputSTR = "紅嬰仔哭甲一身軀汗"
+    inputSTR = "伊共花矸排做一列，予人欣賞。。"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2", userDefinedDictFILE="./myDict.json")
     print(resultDICT)

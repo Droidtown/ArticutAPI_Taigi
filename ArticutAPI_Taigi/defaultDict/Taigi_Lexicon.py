@@ -42,6 +42,7 @@ try:
     from DroidtownTG_dict.FUNC_negation import DT_FuncNegation
     from DroidtownTG_dict.IDIOM import DT_Idiom
     from DroidtownTG_dict.LOCATION import DT_Location
+    from DroidtownTG_dict.TIME_justtime import DT_TimeJusttime
     from DroidtownTG_dict.MODAL import DT_Modal
     from DroidtownTG_dict.MODIFIER import DT_Modifier
     from DroidtownTG_dict.MODIFIER_color import DT_ModifierColor
@@ -86,6 +87,7 @@ except:
     from .DroidtownTG_dict.FUNC_negation import DT_FuncNegation
     from .DroidtownTG_dict.IDIOM import DT_Idiom
     from .DroidtownTG_dict.LOCATION import DT_Location
+    from .DroidtownTG_dict.TIME_justtime import DT_TimeJusttime
     from .DroidtownTG_dict.MODAL import DT_Modal
     from .DroidtownTG_dict.MODIFIER import DT_Modifier
     from .DroidtownTG_dict.MODIFIER_color import DT_ModifierColor
@@ -168,6 +170,7 @@ def dictCombiner():
               "FUNC_negation"         : DT_FuncNegation,
               "IDIOM"                 : DT_Idiom,
               "LOCATION"              : DT_Location,
+              "TIME_justtime"         : DT_TimeJusttime,
               "MODAL"                 : DT_Modal,
               "MODIFIER"              : DT_Modifier,
               "MODIFIER_color"        : DT_ModifierColor,
@@ -218,4 +221,4 @@ def dictCombiner():
 
 if __name__ == "__main__":
     combinedDICT = dictCombiner()
-    print(combinedDICT["MODIFIER"])
+    print(combinedDICT["TIME_justtime"])

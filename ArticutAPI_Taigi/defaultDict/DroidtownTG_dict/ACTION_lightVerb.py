@@ -1,1 +1,3 @@
-DT_ActionLightVerb = ["hō͘"]
+DT_ActionLightVerb = ["hō͘",
+                      "去予"
+                      ]

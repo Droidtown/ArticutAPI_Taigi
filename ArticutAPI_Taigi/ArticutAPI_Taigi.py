@@ -7,6 +7,7 @@ import platform
 import re
 import tempfile
 import unicodedata
+from pprint import pprint
 
 from ArticutAPI import Articut
 try:
@@ -307,11 +308,11 @@ class ArticutTG:
 
 
 if __name__ == "__main__":
-    accountDICT = {"username":"", "apikey":""}
+    accountDICT = {"username":"peter.w@droidtown.co", "apikey":"Fs=YW-3@&3HO=hCXPPb2+Zw+ffjBzS4"}
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     inputSTR = "跋倒, 佮意"
-    inputSTR = "伊共花矸排做一列，予人欣賞。。"
+    inputSTR = "買果子的錢，一人愛出一半"
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2", userDefinedDictFILE="./myDict.json")
-    print(resultDICT)
+    pprint(resultDICT)

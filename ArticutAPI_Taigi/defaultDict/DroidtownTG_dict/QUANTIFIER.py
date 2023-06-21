@@ -1,1 +1,2 @@
-DT_Quantifier = []
+DT_Quantifier = ["一寡仔"
+                 ]

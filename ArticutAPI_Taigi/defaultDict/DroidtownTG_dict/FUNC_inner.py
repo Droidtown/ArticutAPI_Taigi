@@ -1,3 +1,5 @@
 DT_FuncInner = ["ê",
-                "hit"
+                "hit",
+                "的",
+                "就"
                 ]

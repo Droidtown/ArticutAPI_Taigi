@@ -34,4 +34,11 @@ shiftRule =[
     # </N => V>
     (re.compile("(?<=</ENTITY_classifier>)<ACTION_verb>數</ACTION_verb>"), ("ACTION_verb",), ("ENTITY_noun",)),
     (re.compile("<FUNC_inner>予伊</FUNC_inner>"), ("<FUNC_inner>予伊</FUNC_inner>",), ("<ACTION_verb>予</ACTION_verb><ENTITY_pronoun>伊</ENTITY_pronoun>",)),
+    (re.compile("<MODIFIER>([^<])</MODIFIER><MODIFIER>\\1</MODIFIER>"), ("</MODIFIER><MODIFIER>",), ("",)),
+    (re.compile("<MODIFIER>毋敢</MODIFIER>"), ("<MODIFIER>毋敢</MODIFIER>",), ("<FUNC_negation>毋</FUNC_negation><ACTION_verb>敢</ACTION_verb>",)),
+    (re.compile("<MODIFIER>較</MODIFIER><MODIFIER>[^<]{1,2}</MODIFIER>"), ("</MODIFIER><MODIFIER>", "MODIFIER"), ("", "DegreeP")),
+    (re.compile("<ACTION_verb>[^<]{1,2}</ACTION_verb><MODIFIER>一下</MODIFIER>"), ("</ACTION_verb><MODIFIER>", "ACTION_verb", "MODIFIER"), ("", "ACTION_quantifiedVerb", "ACTION_quantifiedVerb")),
+    (re.compile("<ENTITY_pronoun>[阮𪜶你我他伊]</ENTITY_pronoun>(?=<ENTITY_noun>阿[舅叔嬸婆爺爹娘父公爸母]</ENTITY_noun>)"), ("ENTITY_pronoun",), ("ENTITY_possessive",)),
+    (re.compile("<ENTITY_pronoun>[阮𪜶你我他伊]</ENTITY_pronoun>(?=<ENTITY_noun>[家兜厝舅叔嬸婆爺爹娘父公爸母]</ENTITY_noun>)"), ("ENTITY_pronoun",), ("ENTITY_possessive",)),
+    (re.compile("<ACTION_verb>攏會</ACTION_verb>"), ("<ACTION_verb>攏會</ACTION_verb>",), ("<QUANTIFIER>攏</QUANTIFIER><MODAL>會</MODAL>",))
 ]

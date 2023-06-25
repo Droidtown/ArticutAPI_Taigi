@@ -1,5 +1,7 @@
 DT_ClauseParticle = ["啊都",
                      "嗚呼",
+                     "矣",
+                     "咧",
                      "oo-hoo",
                      "--hioh",
                      "--lah",

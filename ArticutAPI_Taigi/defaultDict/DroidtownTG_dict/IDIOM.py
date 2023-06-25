@@ -1,1 +1,1 @@
-DT_Idiom = []
+DT_Idiom = ["痟狗舂墓壙"]

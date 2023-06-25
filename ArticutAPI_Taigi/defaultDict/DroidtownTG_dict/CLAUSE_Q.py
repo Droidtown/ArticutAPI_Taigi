@@ -1,1 +1,3 @@
-DT_ClauseQ = ["tsuánn-iūnn"]
+DT_ClauseQ = ["tsuánn-iūnn",
+              "按怎"
+              ]

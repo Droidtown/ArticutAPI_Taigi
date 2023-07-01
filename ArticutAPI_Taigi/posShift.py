@@ -68,6 +68,8 @@ shiftRule =[
     (re.compile("<MODIFIER>到今</MODIFIER>"), ("<MODIFIER>到今</MODIFIER>",), ("<ACTION_verb>到</ACTION_verb><TIME_justtime>今</TIME_justtime>",)),
     (re.compile("((?<=</LOCATION>)|(?<=</ENTITY_noun>))<ENTITY_noun>內</ENTITY_noun>"), ("ENTITY_noun",), ("RANGE_locality",)),
     (re.compile("<ENTITY_classifier>才</ENTITY_classifier>"), ("ENTITY_classifier",), ("FUNC_inner",)),
+    (re.compile("<MODIFIER>平</MODIFIER><ACTION_verb>懸</ACTION_verb>"), ("MODIFIER", "ACTION_verb"), ("FUNC_degreeHead", "MODIFIER")),
+    (re.compile("<MODIFIER>平</MODIFIER>(?=<MODIFIER>)"), ("MODIFIER",), ("FUNC_degreeHead",)),
     # <degreeHead + MODIFIER => DegreeP>
     (re.compile("<FUNC_degreeHead>[^<]</FUNC_degreeHead><MODIFIER>[^<]+</MODIFIER>"), ("</FUNC_degreeHead><MODIFIER>", "FUNC_degreeHead", "MODIFIER"), ("", "DegreeP", "DegreeP")),
     # <degreeHead + MODIFIER => DegreeP>

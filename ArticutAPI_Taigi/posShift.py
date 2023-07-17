@@ -4,7 +4,9 @@
 import re
 
 shiftRule =[
+    (re.compile("<CLAUSE_particle>咧</CLAUSE_particle>(?=<ACTION_verb>)"), ("CLAUSE_particle",), ("ASPECT",)),
     (re.compile("(?<=</FUNC_inner>)<ACTION_verb>款</ACTION_verb>"), ("ACTION_verb",), ("ENTITY_noun",)),
+    (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ENTITY_classifier>點鐘</ENTITY_classifier>"), ("</ENTITY_num><ENTITY_classifier>", "ENTITY_num", "ENTITY_classifier"), ("", "TIME_justtime" , "TIME_justtime")),
     # <NN => N>
     (re.compile("<ENTITY_noun>[^<]+</ENTITY_noun><ENTITY_oov>仔</ENTITY_oov>"), ("</ENTITY_noun><ENTITY_oov>", "oov"), ("", "noun")),
     (re.compile("<ENTITY_noun>[^<]{1,3}</ENTITY_noun><ENTITY_noun>族</ENTITY_noun>"), ("</ENTITY_noun><ENTITY_noun>",), ("",)),
@@ -12,15 +14,16 @@ shiftRule =[
     (re.compile("<ENTITY_classifier>[^<]{2}</ENTITY_classifier>"), ("ENTITY_classifier",), ("ENTITY_noun",)),
     (re.compile("(?<!</FUNC_determiner>)<ENTITY_classifier>[^<]</ENTITY_classifier>"), ("ENTITY_classifier",), ("ENTITY_noun",)),
     (re.compile("<ACTION_verb>好</ACTION_verb><ENTITY_noun>[^<]</ENTITY_noun>"), ("</ACTION_verb><ENTITY_noun>", "ACTION_verb", "ENTITY_noun"), ("", "MODIFIER", "MODIFIER")),
-    (re.compile("<ENTITY_pronoun>彼</ENTITY_pronoun><ENTITY_noun>[間]</ENTITY_noun>"), ("</ENTITY_pronoun><ENTITY_noun>", "ENTITY_pronoun", "ENTITY_noun"), ("", "ENTITY_DetPhrase", "ENTITY_DetPhrase")),
+    (re.compile("<ENTITY_pronoun>[彼這]</ENTITY_pronoun><ENTITY_noun>[間]</ENTITY_noun>"), ("</ENTITY_pronoun><ENTITY_noun>", "ENTITY_pronoun", "ENTITY_noun"), ("", "ENTITY_DetPhrase", "ENTITY_DetPhrase")),
     # </NN => N>
     (re.compile("(?<=<ACTION_verb>[^<]</ACTION_verb>)<ACTION_verb>甲</ACTION_verb>"), ("ACTION_verb",), ("FUNC_inner",)),
     (re.compile("((?<=</ACTION_verb>)|(?<=</FUNC_negation>))<ACTION_verb>傷</ACTION_verb>(?=<MODIFIER>)"), ("ACTION_verb",), ("FUNC_degreeHead",)),
+    (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ACTION_verb>種</ACTION_verb>"), ("</ENTITY_num><ACTION_verb>", "ENTITY_num", "ACTION_verb"), ("", "ENTITY_classifier", "ENTITY_classifier")),
     (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ENTITY_noun>个</ENTITY_noun>"), ("</ENTITY_num><ENTITY_noun>", "ENTITY_num", "ENTITY_noun"), ("", "ENTITY_classifier", "ENTITY_classifier")),
     (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ENTITY_classifier>[^<]</ENTITY_classifier>"), ("</ENTITY_num><ENTITY_classifier>", "ENTITY_num"), ("", "ENTITY_classifier")),
+    (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ENTITY_noun>逝</ENTITY_noun>"), ("</ENTITY_num><ENTITY_noun>", "ENTITY_num", "ENTITY_noun"), ("", "ACTION_eventQuantifier", "ACTION_eventQuantifier")),
     (re.compile("<MODIFIER>一</MODIFIER><ENTITY_classifier>[^<]</ENTITY_classifier>"), ("</MODIFIER><ENTITY_classifier>", "MODIFIER"), ("", "ENTITY_classifier")),
     (re.compile("<ENTITY_classifier>錢</ENTITY_classifier>"), ("ENTITY_classifier",), ("ENTITY_noun",)),
-    (re.compile("(?<=一[^<]</MODIFIER>)<ACTION_verb>會</ACTION_verb>"), ("ACTION_verb",), ("MODAL",)),
     (re.compile("((?<=</ACTION_verb>)|(?<=</MODAL>))<ENTITY_classifier>落</ENTITY_classifier>"), ("ENTITY_classifier",), ("ACTION_verb",)),
     (re.compile("(<MODIFIER>[一二三四五六七八九十百千萬億兆]+</MODIFIER>){2,}"), ("</MODIFIER><MODIFIER>",), ("",)),
     (re.compile("(<MODIFIER>[一二三四五六七八九十百千萬億兆]+</MODIFIER><ACTION_verb>箍</ACTION_verb>)"), ("</MODIFIER><ACTION_verb>", "MODIFIER", "ACTION_verb"), ("", "ENTITY_currency", "ENTITY_currency")),
@@ -28,6 +31,7 @@ shiftRule =[
     (re.compile("<ENTITY_classifier>時</ENTITY_classifier>"), ("classifier",), ("noun",)),
     (re.compile("(?<=<ENTITY_classifier>一時</ENTITY_classifier>)<ACTION_verb>煞"), ("<ACTION_verb>煞",), ("<FUNC_inner>煞</FUNC_inner><ACTION_verb>",)),
     (re.compile("<ACTION_verb>歹</ACTION_verb>(?=<ENTITY)"), ("ACTION_verb",), ("MODIFIER",)),
+    (re.compile("<ACTION_verb>較</ACTION_verb>(?=<ACTION)"), ("ACTION_verb",), ("MODIFIER",)),
     # <CLAUSE => QUANTIFIER>
     (re.compile("(?<=<CLAUSE_Q>幾</CLAUSE_Q><FUNC_conjunction>若</FUNC_conjunction>)<ACTION_verb>[^<]</ACTION_verb>"), ("ACTION_verb",), ("ENTITY_noun",)),
     (re.compile("<CLAUSE_Q>幾</CLAUSE_Q><FUNC_conjunction>若</FUNC_conjunction>"), ("</CLAUSE_Q><FUNC_conjunction>", "CLAUSE_Q", "FUNC_conjunction"), ("", "QUANTIFIER", "QUANTIFIER")),
@@ -48,6 +52,7 @@ shiftRule =[
     (re.compile("<ACTION_verb>[^<]</ACTION_verb><ENTITY_nounHead>[^<]</ENTITY_nounHead>"), ("</ACTION_verb><ENTITY_nounHead>", "ENTITY_nounHead"), ("", "ACTION_verb")),
     (re.compile("<ACTION_verb>[^<想要欲愛]</ACTION_verb><ACTION_verb>[^<]</ACTION_verb>(?!<ACTION_verb>著)"), ("</ACTION_verb><ACTION_verb>",), ("",)),
     # </N => V>
+    (re.compile("((?<=一[^<]</MODIFIER>)|(?<=</ACTION_verb>))<ACTION_verb>會</ACTION_verb>"), ("ACTION_verb",), ("MODAL",)),
     (re.compile("(?<=</FUNC_negation>)<ENTITY_noun>買賣</ENTITY_noun>"), ("ENTITY_noun",), ("ACTION_verb",)),
     (re.compile("<ENTITY_noun>落</ENTITY_noun>(?=<FUNC_inner>)"), ("ENTITY_noun",), ("ACTION_verb",)),
     (re.compile("<ACTION_verb>[^<]</ACTION_verb><ACTION_verb>起來</ACTION_verb>"), ("</ACTION_verb><ACTION_verb>",), ("",)),

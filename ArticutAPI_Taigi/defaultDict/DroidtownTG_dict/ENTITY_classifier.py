@@ -1,1 +1,2 @@
-DT_EntityClassifier = ["個"]
+DT_EntityClassifier = ["個",
+                       "个"]

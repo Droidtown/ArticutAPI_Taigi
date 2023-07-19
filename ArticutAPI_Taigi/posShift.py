@@ -5,7 +5,11 @@ import re
 
 shiftRule =[
     (re.compile("<CLAUSE_particle>咧</CLAUSE_particle>(?=<ACTION_verb>)"), ("CLAUSE_particle",), ("ASPECT",)),
+    (re.compile("<ENTITY_noun>[一二三四五六七八九十百千萬億兆]+</ENTITY_noun>"), ("ENTITY_noun",), ("ENTITY_num",)),
+    (re.compile("<ENTITY_num>[^<]+</ENTITY_num><MODIFIER>[一二三四五六七八九十百千萬億兆]+</MODIFIER>"), ("</ENTITY_num><MODIFIER>", "MODIFIER"), ("", "ENTITY_num")),
+    (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ENTITY_classifier>[^<]*坪</ENTITY_classifier>"), ("</ENTITY_num><ENTITY_classifier>", "num", "classifier",), ("", "measurement", "measurement")),
     (re.compile("(?<=</FUNC_inner>)<ACTION_verb>款</ACTION_verb>"), ("ACTION_verb",), ("ENTITY_noun",)),
+    #(re.compile("<ACTION_verb>差[一二三四五六七八九十百千萬億兆]+</ACTION_verb>"), ("ACTION_verb", "<ENTITY_num>差",), ("ENTITY_num", "<ACTION_verb>差</ACTION_verb><ENTITY_num>")),
     (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ENTITY_classifier>點鐘</ENTITY_classifier>"), ("</ENTITY_num><ENTITY_classifier>", "ENTITY_num", "ENTITY_classifier"), ("", "TIME_justtime" , "TIME_justtime")),
     # <NN => N>
     (re.compile("<ENTITY_noun>[^<]+</ENTITY_noun><ENTITY_oov>仔</ENTITY_oov>"), ("</ENTITY_noun><ENTITY_oov>", "oov"), ("", "noun")),
@@ -14,7 +18,7 @@ shiftRule =[
     (re.compile("<ENTITY_classifier>[^<]{2}</ENTITY_classifier>"), ("ENTITY_classifier",), ("ENTITY_noun",)),
     (re.compile("(?<!</FUNC_determiner>)<ENTITY_classifier>[^<]</ENTITY_classifier>"), ("ENTITY_classifier",), ("ENTITY_noun",)),
     (re.compile("<ACTION_verb>好</ACTION_verb><ENTITY_noun>[^<]</ENTITY_noun>"), ("</ACTION_verb><ENTITY_noun>", "ACTION_verb", "ENTITY_noun"), ("", "MODIFIER", "MODIFIER")),
-    (re.compile("<ENTITY_pronoun>[彼這]</ENTITY_pronoun><ENTITY_noun>[間]</ENTITY_noun>"), ("</ENTITY_pronoun><ENTITY_noun>", "ENTITY_pronoun", "ENTITY_noun"), ("", "ENTITY_DetPhrase", "ENTITY_DetPhrase")),
+    (re.compile("<ENTITY_pronoun>[彼這]</ENTITY_pronoun><ENTITY_noun>[間粒條]</ENTITY_noun>"), ("</ENTITY_pronoun><ENTITY_noun>", "ENTITY_pronoun", "ENTITY_noun"), ("", "ENTITY_DetPhrase", "ENTITY_DetPhrase")),
     # </NN => N>
     (re.compile("(?<=<ACTION_verb>[^<]</ACTION_verb>)<ACTION_verb>甲</ACTION_verb>"), ("ACTION_verb",), ("FUNC_inner",)),
     (re.compile("((?<=</ACTION_verb>)|(?<=</FUNC_negation>))<ACTION_verb>傷</ACTION_verb>(?=<MODIFIER>)"), ("ACTION_verb",), ("FUNC_degreeHead",)),
@@ -60,6 +64,7 @@ shiftRule =[
     (re.compile("(?<=</ENTITY_classifier>)<ACTION_verb>數</ACTION_verb>"), ("ACTION_verb",), ("ENTITY_noun",)),
     (re.compile("<FUNC_inner>予伊</FUNC_inner>"), ("<FUNC_inner>予伊</FUNC_inner>",), ("<ACTION_verb>予</ACTION_verb><ENTITY_pronoun>伊</ENTITY_pronoun>",)),
     (re.compile("<MODIFIER>([^<])</MODIFIER><MODIFIER>\\1</MODIFIER>"), ("</MODIFIER><MODIFIER>",), ("",)),
+    (re.compile("<ACTION_verb>毋知</ACTION_verb>"), ("<ACTION_verb>毋知</ACTION_verb>",), ("<FUNC_negation>毋</FUNC_negation><ACTION_verb>知</ACTION_verb>",)),
     (re.compile("<ACTION_verb>無愛</ACTION_verb>"), ("<ACTION_verb>無愛</ACTION_verb>",), ("<FUNC_negation>無</FUNC_negation><ACTION_verb>愛</ACTION_verb>",)),
     (re.compile("<MODIFIER>毋敢</MODIFIER>"), ("<MODIFIER>毋敢</MODIFIER>",), ("<FUNC_negation>毋</FUNC_negation><ACTION_verb>敢</ACTION_verb>",)),
     (re.compile("<MODIFIER>[較誠真]</MODIFIER><MODIFIER>[^<]{1,2}</MODIFIER>"), ("</MODIFIER><MODIFIER>", "MODIFIER"), ("", "DegreeP")),
@@ -78,7 +83,7 @@ shiftRule =[
     # <degreeHead + MODIFIER => DegreeP>
     (re.compile("<FUNC_degreeHead>[^<]</FUNC_degreeHead><MODIFIER>[^<]+</MODIFIER>"), ("</FUNC_degreeHead><MODIFIER>", "FUNC_degreeHead", "MODIFIER"), ("", "DegreeP", "DegreeP")),
     # <degreeHead + MODIFIER => DegreeP>
-
+    (re.compile("<IDIOM>變啥魍</IDIOM>"), ("<IDIOM>變啥魍</IDIOM>",), ("<ACTION_verb>變</ACTION_verb><CLAUSE_Q>啥魍</CLAUSE_Q>",)),
     # <V => VP>
     (re.compile("<ACTION_verb>[^<]</ACTION_verb><ASPECT>[著]</ASPECT>"), ("</ACTION_verb><ASPECT>", "ACTION_verb", "ASPECT"), ("", "VerbP", "VerbP")),
     # </V => VP>

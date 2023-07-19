@@ -40,6 +40,7 @@ try:
     from DroidtownTG_dict.FUNC_degreeHead import DT_FuncDegreeHead
     from DroidtownTG_dict.FUNC_inner import DT_FuncInner
     from DroidtownTG_dict.FUNC_negation import DT_FuncNegation
+    from DroidtownTG_dict.FUNC_conjunction import DT_FuncConjunction
     from DroidtownTG_dict.IDIOM import DT_Idiom
     from DroidtownTG_dict.LOCATION import DT_Location
     from DroidtownTG_dict.TIME_justtime import DT_TimeJusttime
@@ -85,6 +86,7 @@ except:
     from .DroidtownTG_dict.FUNC_degreeHead import DT_FuncDegreeHead
     from .DroidtownTG_dict.FUNC_inner import DT_FuncInner
     from .DroidtownTG_dict.FUNC_negation import DT_FuncNegation
+    from .DroidtownTG_dict.FUNC_conjunction import DT_FuncConjunction
     from .DroidtownTG_dict.IDIOM import DT_Idiom
     from .DroidtownTG_dict.LOCATION import DT_Location
     from .DroidtownTG_dict.TIME_justtime import DT_TimeJusttime
@@ -120,6 +122,7 @@ def dictCombiner():
                     "FUNC_inner"            : None,
                     "FUNC_inter"            : None,
                     "FUNC_negation"         : None,
+                    "FUNC_conjunction"      : None,
                     "IDIOM"                 : None,
                     "LOCATION"              : None,
                     "MODAL"                 : None,
@@ -168,6 +171,7 @@ def dictCombiner():
               "FUNC_degreeHead"       : DT_FuncDegreeHead,
               "FUNC_inner"            : DT_FuncInner,
               "FUNC_negation"         : DT_FuncNegation,
+              "FUNC_conjunction"      : DT_FuncConjunction,
               "IDIOM"                 : DT_Idiom,
               "LOCATION"              : DT_Location,
               "TIME_justtime"         : DT_TimeJusttime,

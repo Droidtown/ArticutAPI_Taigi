@@ -12,10 +12,10 @@ from pprint import pprint
 from ArticutAPI import Articut
 try:
     from .defaultDict import Taigi_Lexicon
+    from .posShift import shiftRule
 except:
     from defaultDict import Taigi_Lexicon
-
-from posShift import shiftRule
+    from posShift import shiftRule
 
 BASEPATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -312,7 +312,8 @@ if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     inputSTR = "跋倒, 佮意"
-    inputSTR = "你毋通佮伊衝突。".replace("。", "")
+    inputSTR = "這間樓仔厝猶未完工。".replace("。", "")
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)
+    #<ENTITY_classifier>[^<]+</ENTITY_classifier><ENTITY_noun>[^<]+</ENTITY_noun><MODIFIER>[^<]+</MODIFIER>

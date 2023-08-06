@@ -39,6 +39,7 @@ try:
     from DroidtownTG_dict.ENTITY_pronoun import DT_EntityPronoun
     from DroidtownTG_dict.FUNC_degreeHead import DT_FuncDegreeHead
     from DroidtownTG_dict.FUNC_inner import DT_FuncInner
+    from DroidtownTG_dict.FUNC_inter import DT_FuncInter
     from DroidtownTG_dict.FUNC_negation import DT_FuncNegation
     from DroidtownTG_dict.FUNC_conjunction import DT_FuncConjunction
     from DroidtownTG_dict.IDIOM import DT_Idiom
@@ -85,6 +86,7 @@ except:
     from .DroidtownTG_dict.ENTITY_pronoun import DT_EntityPronoun
     from .DroidtownTG_dict.FUNC_degreeHead import DT_FuncDegreeHead
     from .DroidtownTG_dict.FUNC_inner import DT_FuncInner
+    from .DroidtownTG_dict.FUNC_inter import DT_FuncInter
     from .DroidtownTG_dict.FUNC_negation import DT_FuncNegation
     from .DroidtownTG_dict.FUNC_conjunction import DT_FuncConjunction
     from .DroidtownTG_dict.IDIOM import DT_Idiom
@@ -170,6 +172,7 @@ def dictCombiner():
               "ENTITY_pronoun"        : DT_EntityPronoun,
               "FUNC_degreeHead"       : DT_FuncDegreeHead,
               "FUNC_inner"            : DT_FuncInner,
+              "FUNC_inter"            : DT_FuncInter,
               "FUNC_negation"         : DT_FuncNegation,
               "FUNC_conjunction"      : DT_FuncConjunction,
               "IDIOM"                 : DT_Idiom,

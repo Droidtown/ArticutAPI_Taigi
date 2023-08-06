@@ -312,8 +312,8 @@ if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     inputSTR = "跋倒, 佮意"
-    inputSTR = "沒法度".replace("。", "")
+    inputSTR = "打探消息".replace("。", "")
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)
-    #<ENTITY_classifier>[^<]+</ENTITY_classifier><ENTITY_noun>[^<]+</ENTITY_noun><MODIFIER>[^<]+</MODIFIER>
+    #<ENTITY_pronoun>[^<]+</ENTITY_pronoun>(<FUNC_inner>[^<]+</FUNC_inner>)?<ENTITY_noun>[^<]+</ENTITY_noun><DegreeP>[^<]+</DegreeP>

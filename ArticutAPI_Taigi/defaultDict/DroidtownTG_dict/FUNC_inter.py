@@ -1,2 +1,3 @@
-DT_FuncInter = ["雖罔"
+DT_FuncInter = ["雖罔",
+                "既然"
                 ]

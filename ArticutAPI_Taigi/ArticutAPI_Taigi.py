@@ -252,7 +252,7 @@ class ArticutTG:
                     tmpLIST = list(set(tmpLIST))
                     self.userDefinedDICT[k].extend(tmpLIST)
                 except KeyError:
-                    self.userDefinedDICT[k] = self.defaultDICT[POS]
+                    self.userDefinedDICT[k] = tmpLIST
 
         json.dump( self.userDefinedDICT, self.TaigiDictFILE)
         self.TaigiDictFILE.flush()
@@ -312,7 +312,7 @@ if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     inputSTR = "跋倒, 佮意"
-    inputSTR = "我想欲去便所。".replace("。", "")
+    inputSTR = "安全帽".replace("。", "")
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)

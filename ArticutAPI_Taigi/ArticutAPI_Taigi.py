@@ -308,11 +308,17 @@ class ArticutTG:
 
 
 if __name__ == "__main__":
-    accountDICT = {"username":"peter.w@droidtown.co", "apikey":"Fs=YW-3@&3HO=hCXPPb2+Zw+ffjBzS4"}
+    try:
+        with open("../account.info", encoding="utf-8") as jF:
+            accountDICT = json.load(jF)
+    except:
+        accountDICT = {"username":"", "apikey":""}
+
+    accountDICT = {"username":accountDICT["username"], "apikey":accountDICT["apikey"]}
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     inputSTR = "跋倒, 佮意"
-    inputSTR = "安全帽".replace("。", "")
+    inputSTR = "堡壘".replace("。", "")
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)

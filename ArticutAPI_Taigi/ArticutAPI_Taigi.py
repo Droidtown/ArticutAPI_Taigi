@@ -33,6 +33,7 @@ class ArticutTG:
         self.shiftRule = shiftRule
         self.defaultDICT = Taigi_Lexicon.dictCombiner()
         self.legacyLIST = ["", "𪜶𪹚𫝏𫝘𫝙𫝛𫝞𫝺𫝻𫝾𫞭𫞻𫞼𫟂𫟊𫟧𫠛𫣆"]
+        self.personPat = re.compile("(?<=<ENTITY_person>)[^<]+(?=</ENTITY_person>)")
     def _pos2Obj(self, posLIST):
         resultLIST = []
         for pos in posLIST:
@@ -254,9 +255,15 @@ class ArticutTG:
                 except KeyError:
                     self.userDefinedDICT[k] = tmpLIST
 
-        json.dump( self.userDefinedDICT, self.TaigiDictFILE)
-        self.TaigiDictFILE.flush()
+        #<利用 Articut 建立人名字典>
+        checkingPersonDICT = self.articut.parse(inputSTR, level="lv1")
+        personLIST = [p[-1] for p in [e[-1] for e in self.articut.getPersonLIST(checkingPersonDICT,  includePronounBOOL=False) if e != []] if p!=[]]
+        if personLIST != []:
+            self.userDefinedDICT["ENTITY_person"] = personLIST
+        #</利用 Articut 建立人名字典>
 
+        json.dump(self.userDefinedDICT, self.TaigiDictFILE)
+        self.TaigiDictFILE.flush()
 
         self._mixedInputDetector(inputSTR)
         articutResultDICT = self.articut.parse(inputSTR, level=level, userDefinedDictFILE=self.TaigiDictFILE.name)
@@ -270,7 +277,7 @@ class ArticutTG:
         for i, s in enumerate(articutResultDICT["result_pos"]):
             for p in POScandidateLIST:
                 articutResultDICT["result_pos"][i] = articutResultDICT["result_pos"][i].replace(p[0],p[1])
-
+        print("src", articutResultDICT["result_pos"])
         articutResultDICT["result_pos"] = self._posShift(articutResultDICT["result_pos"])
         articutResultDICT["result_obj"] = self._pos2Obj(articutResultDICT["result_pos"])
         articutResultDICT["result_segmentation"] = self._pos2Seg(articutResultDICT["result_pos"])
@@ -318,7 +325,7 @@ if __name__ == "__main__":
     #台語漢字 CWS/POS TEST
     inputSTR = "你ē-sái請ta̍k-ke提供字句hō͘你做這個試驗。"
     inputSTR = "跋倒, 佮意"
-    inputSTR = "一粒好好的錶仔變弄甲害害去。。".replace("。", "")
+    inputSTR = "這隻椅仔做甲不止仔𠕇篤".replace("。", "")
     articutTaigi = ArticutTG(username=accountDICT["username"], apikey=accountDICT["apikey"])
     resultDICT = articutTaigi.parse(inputSTR, level="lv2")
     pprint(resultDICT)

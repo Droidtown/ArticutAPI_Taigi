@@ -141,7 +141,7 @@ shiftRule =[
     (re.compile("<ACTION_verb>[^<有予共]</ACTION_verb><ENTITY_nounHead>[^<]</ENTITY_nounHead>"), ("</ACTION_verb><ENTITY_nounHead>", "ENTITY_nounHead"), ("", "ACTION_verb")),
     (re.compile("(?<=<ACTION_verb>[^<]{2}</ACTION_verb>)<ENTITY_noun>戶</ENTITY_noun>"), ("noun",), ("nounHead",)),
     (re.compile("(?<=真</MODIFIER>)<ACTION_verb>光</ACTION_verb>"), ("ACTION_verb",), ("MODIFIER",)),
-    (re.compile("<ACTION_verb>[^<想要欲愛學去來會共]</ACTION_verb><ACTION_verb>[^<較予光欲有]</ACTION_verb>(?!<ACTION_verb>著)(?!<FUNC_negation>袂)"), ("</ACTION_verb><ACTION_verb>",), ("",)),
+    (re.compile("<ACTION_verb>[^<想要著欲愛學去來會共]</ACTION_verb><ACTION_verb>[^<較予光欲有]</ACTION_verb>(?!<ACTION_verb>著)(?!<FUNC_negation>袂)"), ("</ACTION_verb><ACTION_verb>",), ("",)),
     (re.compile("<TIME_justtime>天光</TIME_justtime>(?=<CLAUSE_particle>)"), ("TIME_justtime",), ("ACTION_verb",)),
     # </N => V>
     (re.compile("<ACTION_verb>通</ACTION_verb>(?=<ACTION_verb>)"), ("ACTION_verb",), ("MODAL",)),

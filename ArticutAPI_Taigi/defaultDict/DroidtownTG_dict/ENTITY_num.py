@@ -1,1 +1,1 @@
-DT_EntityNum = []
+DT_EntityNum = ["七"]

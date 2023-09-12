@@ -3,6 +3,7 @@ DT_FuncDegreeHead = ["遮爾",
                      "如此",
                      "遐爾仔",
                      "遐爾",
+                     "愈",
                      "tng-tih",
                      "khah"
                      ]

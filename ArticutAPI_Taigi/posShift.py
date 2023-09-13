@@ -8,7 +8,7 @@ shiftRule =[
     (re.compile("<FUNC_conjunction>莫講</FUNC_conjunction><ENTITY_noun>話</ENTITY_noun>"), ("<FUNC_conjunction>莫講</FUNC_conjunction><ENTITY_noun>話</ENTITY_noun>",), ("<FUNC_negation>莫</FUNC_negation><ACTION_verb>講話</ACTION_verb>",)),
     (re.compile("<FUNC_conjunction>莫講</FUNC_conjunction>"), ("<FUNC_conjunction>莫講</FUNC_conjunction>",), ("<FUNC_negation>莫</FUNC_negation><ACTION_verb>講</ACTION_verb>",)),
     (re.compile("<FUNC_conjunction>莫怪</FUNC_conjunction>"), ("<FUNC_conjunction>莫怪</FUNC_conjunction>",), ("<FUNC_negation>莫</FUNC_negation><ACTION_verb>怪</ACTION_verb>",)),
-    (re.compile("<ENTITY_noun>歹代</ENTITY_noun><ENTITY_oov>誌</ENTITY_oov>"), ("<ENTITY_noun>歹代</ENTITY_noun><ENTITY_oov>誌</ENTITY_oov>",), ("<MODIFIER>歹</MODIFIER><ENTITY_noun>代誌</ENTITY_noun>"))
+    (re.compile("<ENTITY_noun>歹代</ENTITY_noun><ENTITY_oov>誌</ENTITY_oov>"), ("<ENTITY_noun>歹代</ENTITY_noun><ENTITY_oov>誌</ENTITY_oov>",), ("<MODIFIER>歹</MODIFIER><ENTITY_noun>代誌</ENTITY_noun>")),
     (re.compile("<ACTION_verb>[^<]+</ACTION_verb><CLAUSE_particle>咧</CLAUSE_particle><ACTION_verb>[^<]+</ACTION_verb><CLAUSE_particle>咧</CLAUSE_particle>"), ("</ACTION_verb><CLAUSE_particle>", "</CLAUSE_particle><ACTION_verb>", "CLAUSE_particle", "ACTION_verb"), ("", "", "ACTION_quantifiedVerb", "ACTION_quantifiedVerb")),
     (re.compile("<ACTION_verb>花</ACTION_verb>"), ("ACTION_verb",), ("ENTITY_noun",)),
     (re.compile("(?<=</ENTITY_num>)<ACTION_verb>甲</ACTION_verb>"), ("ACTION_verb",), ("ENTITY_measurement",)),

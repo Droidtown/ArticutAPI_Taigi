@@ -1,0 +1,1 @@
+DT_RangePeriod = ["進前"]

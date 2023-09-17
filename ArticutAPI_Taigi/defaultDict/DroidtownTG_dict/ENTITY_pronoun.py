@@ -1,4 +1,5 @@
 DT_EntityPronoun = ["逐家",
+                    "咱人",
                     "阿叔",
                     "啞娘",
                     "令尊",
@@ -13,6 +14,7 @@ DT_EntityPronoun = ["逐家",
                     "少爺",
                     "老爺",
                     "夫人",
+                    "前某",
                     "ta̍k-ke",
                     "kann-siû", "sió-tī", "lāu--ê", "bóo-lâng", "siánn-lâng", "tsū-ngóo", "pa̍t-lâng", "hit-jiah", "hit-liah", "tī-tāi", "kok-lâng", "ka-kī"
                     ]

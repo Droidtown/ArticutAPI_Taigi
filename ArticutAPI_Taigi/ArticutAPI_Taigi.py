@@ -410,7 +410,9 @@ if __name__ == "__main__":
         "幼秀跤好命底",
         #"你胃腸無好，涼的毋通食傷濟",
     ]
+
     for inputSTR in inputLIST:
+        #inputSTR = "你莫一直掠人金金看！".replace("。", "")
         resultDICT = articutTaigi.parse(inputSTR, level="lv2")
         pprint(resultDICT)
     #<ENTITY_pronoun>[^<]+</ENTITY_pronoun>(<FUNC_inner>[^<]+</FUNC_inner>)?<ENTITY_noun>[^<]+</ENTITY_noun><DegreeP>[^<]+</DegreeP>

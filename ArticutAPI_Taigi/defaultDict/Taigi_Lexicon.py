@@ -50,7 +50,7 @@ try:
     from DroidtownTG_dict.MODIFIER_color import DT_ModifierColor
     from DroidtownTG_dict.QUANTIFIER import DT_Quantifier
     from DroidtownTG_dict.RANGE_period import DT_RangePeriod
-    from DroidtownTG_dict.RANGE_period import DT_RangeLocality
+    from DroidtownTG_dict.RANGE_locality import DT_RangeLocality
 
     from DroidtownTG_dict.toTL import DT_TL
 except:
@@ -99,7 +99,7 @@ except:
     from .DroidtownTG_dict.MODIFIER_color import DT_ModifierColor
     from .DroidtownTG_dict.QUANTIFIER import DT_Quantifier
     from .DroidtownTG_dict.RANGE_period import DT_RangePeriod
-    from .DroidtownTG_dict.RANGE_period import DT_RangeLocality
+    from .DroidtownTG_dict.RANGE_locality import DT_RangeLocality
 
     from .DroidtownTG_dict.toTL import DT_TL
 

@@ -1,0 +1,1 @@
+DT_RangeLocality = ["頭前", "後壁"]

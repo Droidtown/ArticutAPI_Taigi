@@ -352,6 +352,8 @@ if __name__ == "__main__":
         #"烏白罵人是毋好的代誌",
     ]
 
+    inputLIST = ["伊五十較加"]
+
     for inputSTR in inputLIST:
         #inputSTR = "你莫一直掠人金金看！".replace("。", "")
         resultDICT = articutTaigi.parse(inputSTR, level="lv2")

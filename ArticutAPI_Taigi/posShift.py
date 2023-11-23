@@ -174,7 +174,7 @@ shiftRule =[
     (re.compile("<ENTITY_noun>閣</ENTITY_noun>(?=<ACTION_verb>)"), ("ENTITY_noun",), ("MODIFIER",)),
     (re.compile("<FUNC_conjunction>閣</FUNC_conjunction>(?=<ACTION_verb>[來去])"), ("ENTITY_noun",), ("MODIFIER",)),
     (re.compile("<ACTION_verb>加</ACTION_verb>(?=<ACTION_verb>)"), ("ACTION_verb",), ("MODIFIER",)),
-    (re.compile("<MODIFIER>[加減]</MODIFIER>(?=<QUANTIFIER>一"), ("MODIFIER",), ("ACTION_verb",)),
+    (re.compile("<MODIFIER>[加減]</MODIFIER>(?=<QUANTIFIER>一)"), ("MODIFIER",), ("ACTION_verb",)),
     (re.compile("<ACTION_verb>[^<]</ACTION_verb><ACTION_verb>會</ACTION_verb><ACTION_verb>去</ACTION_verb>"), ("</ACTION_verb><ACTION_verb>", ), ("",)),
     (re.compile("<ACTION_verb>會</ACTION_verb><MODIFIER>好</MODIFIER><ACTION_verb>去</ACTION_verb>"), ("<ACTION_verb>會</ACTION_verb><MODIFIER>好</MODIFIER><ACTION_verb>去</ACTION_verb>",), ("<MODAL>會</MODAL><ACTION_verb>好去</ACTION_verb>",)),
     (re.compile("<LOCATION>安通</LOCATION><ACTION_verb>光</ACTION_verb>"), ("<LOCATION>安通</LOCATION><ACTION_verb>光</ACTION_verb>",), ("<ACTION_verb>安</ACTION_verb><MODIFIER>通光</MODIFIER>",)),

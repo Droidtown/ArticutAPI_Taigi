@@ -1,1 +1,3 @@
-DT_RangePeriod = ["進前"]
+DT_RangePeriod = ["進前",
+                  "了後"
+                  ]

@@ -1,1 +1,1 @@
-DT_ActionEventQuantifier = []
+DT_ActionEventQuantifier = ["彼擺"]

@@ -13,6 +13,8 @@ shiftRule =[
     (re.compile("<FUNC_conjunction>莫講</FUNC_conjunction>"), ("<FUNC_conjunction>莫講</FUNC_conjunction>",), ("<FUNC_negation>莫</FUNC_negation><ACTION_verb>講</ACTION_verb>",)),
     (re.compile("<FUNC_conjunction>莫怪</FUNC_conjunction>"), ("<FUNC_conjunction>莫怪</FUNC_conjunction>",), ("<FUNC_negation>莫</FUNC_negation><ACTION_verb>怪</ACTION_verb>",)),
     (re.compile("<ENTITY_noun>[好歹]代</ENTITY_noun><ENTITY_oov>誌</ENTITY_oov>"), ("ENTITY_noun", "代</MODIFIER><ENTITY_oov>誌</ENTITY_oov>"), ("MODIFIER", "</MODIFIER><ENTITY_noun>代誌</ENTITY_noun>",)),
+    (re.compile("<MODIFIER>[百千萬]</MODIFIER><ACTION_verb>來</ACTION_verb><ENTITY_classifier>[^<]</ENTITY_classifier>"), ("</ACTION_verb><ENTITY_classifier>", "</MODIFIER><ACTION_verb>", "MODIFIER"), ("", "", "ENTITY_classifier")),
+    (re.compile("<MODIFIER>[百千萬]</MODIFIER><MODIFIER>[外多]</MODIFIER><ENTITY_classifier>[^<]</ENTITY_classifier>"), ("</MODIFIER><ENTITY_classifier>", "</MODIFIER><MODIFIER>", "MODIFIER"), ("", "", "ENTITY_classifier")),
     (re.compile("<CLAUSE_Q>幾</CLAUSE_Q><MODIFIER>萬</MODIFIER><ENTITY_classifier>箍</ENTITY_classifier><ENTITY_oov>仔</ENTITY_oov>"), ("</CLAUSE_Q><MODIFIER>", "</MODIFIER><ENTITY_classifier>", "</ENTITY_classifier><ENTITY_oov>", "CLAUSE_Q", "ENTITY_oov"), ("", "", "", "ENTITY_currency", "ENTITY_currency")),
     (re.compile("<ENTITY_noun>[^<]*[一二三四五六七八九十百千萬]</ENTITY_noun><ENTITY_classifier>[工日]</ENTITY_classifier>"), ("</ENTITY_noun><ENTITY_classifier>", "ENTITY_noun", "ENTITY_classifier"), ("", "TIME_justtime", "TIME_justtime")),
     (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ENTITY_classifier>[工日]</ENTITY_classifier>"), ("</ENTITY_num><ENTITY_classifier>", "ENTITY_classifier", "ENTITY_num"), ("", "TIME_justtime", "TIME_justtime")),

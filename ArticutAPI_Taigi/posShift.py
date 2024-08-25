@@ -5,6 +5,7 @@ import re
 
 shiftRule =[
     (re.compile("<ACTION_verb>過</ACTION_verb>(?=<MODAL>)"), ("ACTION_verb",), ("ASPECT",)),
+    (re.compile("<MODIFIER>有一日</MODIFIER>"), ("<MODIFIER>有一日</MODIFIER>",), ("<ACTION_verb>有</ACTION_verb><TIME_justtime>一日</TIME_justtime>",)),
     (re.compile("<ENTITY_classifier>[^<點鐘]{2}</ENTITY_classifier>"), ("ENTITY_classifier",), ("ENTITY_noun",)),
     (re.compile("<ACTION_verb>好過</ACTION_verb><ENTITY_classifier>日</ENTITY_classifier>"), ("<ACTION_verb>好過</ACTION_verb><ENTITY_classifier>日</ENTITY_classifier>",), ("<MODIFIER>好</MODIFIER><ACTION_verb>過日</ACTION_verb>",)),
     (re.compile("<ENTITY_noun>[一二三四五六七八九十]+</ENTITY_noun><ENTITY_classifier>[點分]鐘</ENTITY_classifier>"), ("</ENTITY_noun><ENTITY_classifier>", "ENTITY_noun", "ENTITY_classifier"), ("", "TIME_justtime", "TIME_justtime")),
@@ -88,7 +89,7 @@ shiftRule =[
     (re.compile("<ENTITY_pronoun>[遮遐]</ENTITY_pronoun><MODIFIER>[大小]</MODIFIER><ENTITY_classifier>[^<]</ENTITY_classifier>"), ("</ENTITY_pronoun><MODIFIER>", "</MODIFIER><ENTITY_classifier>", "ENTITY_pronoun", "ENTITY_classifier"), ("", "", "DegreeP", "DegreeP")),
     (re.compile("<ENTITY_pronoun>[遮遐]</ENTITY_pronoun><MODIFIER>[大小]</MODIFIER><ENTITY_noun>空</ENTITY_noun>"), ("</ENTITY_pronoun><MODIFIER>", "</MODIFIER><ENTITY_noun>", "ENTITY_pronoun", "ENTITY_noun"), ("", "", "DegreeP", "DegreeP")),
     (re.compile("<ENTITY_pronoun>遮</ENTITY_pronoun><ENTITY_noun>雨</ENTITY_noun>$"), ("<ENTITY_pronoun>遮</ENTITY_pronoun><ENTITY_noun>雨</ENTITY_noun>",), ("<ACTION_verb>遮雨</ACTION_verb>",)),
-    (re.compile("<MODIFIER>大</MODIFIER><ENTITY_noun>[^<]</ENTITY_noun>"), ("</MODIFIER><ENTITY_noun>", "MODIFIER"), ("", "ENTITY_noun")),
+    (re.compile("<MODIFIER>[大小野]</MODIFIER><ENTITY_noun>[^<]</ENTITY_noun>"), ("</MODIFIER><ENTITY_noun>", "MODIFIER"), ("", "ENTITY_noun")),
     (re.compile("(?<=</MODIFIER>)<ENTITY_noun>大的</ENTITY_noun>"), ("<ENTITY_noun>大的</ENTITY_noun>",), ("<MODIFIER>大</MODIFIER><FUNC_inner>的</FUNC_inner>",)),
     (re.compile("<CLAUSE_particle>咧</CLAUSE_particle>((?=<ACTION_verb>)|(?=<FUNC_conjunction>))"), ("CLAUSE_particle",), ("ASPECT",)),
     (re.compile("^<FUNC_conjunction>佮</FUNC_conjunction>"), ("FUNC_conjunction",), ("ACTION_verb",)),
@@ -104,7 +105,7 @@ shiftRule =[
     (re.compile("<ACTION_verb>無半項</ACTION_verb>"), ("<ACTION_verb>無半項</ACTION_verb>",), ("<FUNC_negation>無</FUNC_negation><ENTITY_noun>半項</ENTITY_noun>",)),
     (re.compile("<MODIFIER>無影</MODIFIER><ENTITY_noun>跡</ENTITY_noun>"), ("<MODIFIER>無影</MODIFIER><ENTITY_noun>跡</ENTITY_noun>",), ("<FUNC_negation>無</FUNC_negation><ENTITY_noun>影跡</ENTITY_noun>",)),
     (re.compile("</ENTITY_num><ENTITY_num>"), ("</ENTITY_num><ENTITY_num>",), ("",)),
-    (re.compile("</ENTITY_num><MODIFIER>捅</MODIFIER>"), ("</ENTITY_num><MODIFIER>", "MODIFIER"), ("", "ENTITY_num")),
+    (re.compile("</ENTITY_num><MODIFIER>[捅外]</MODIFIER>"), ("</ENTITY_num><MODIFIER>", "MODIFIER"), ("", "ENTITY_num")),
     (re.compile("<ACTION_verb>緊修</ACTION_verb><ACTION_verb>理</ACTION_verb>",), ("<ACTION_verb>緊修</ACTION_verb><ACTION_verb>理</ACTION_verb>",), ("<MODIFIER>緊</MODIFIER><ACTION_verb>修理</ACTION_verb>"),),
     (re.compile("<MODIFIER>徛頭</MODIFIER><MODIFIER>前</MODIFIER>"), ("<MODIFIER>徛頭</MODIFIER><MODIFIER>前</MODIFIER>",), ("<ACTION_verb>徛</ACTION_verb><RANGE_locality>頭前</RANGE_locality>",)),
     (re.compile("<ENTITY_num>[^<]+</ENTITY_num><ENTITY_classifier>工</ENTITY_classifier><MODIFIER>[前後]</MODIFIER>"), ("</ENTITY_num><ENTITY_classifier>", "</ENTITY_classifier><MODIFIER>", "ENTITY_num", "MODIFIER"), ("", "", "TIME_justtime", "TIME_justtime")),
@@ -211,6 +212,7 @@ shiftRule =[
     (re.compile("<ACTION_verb>甲</ACTION_verb>(?=<ENTITY_noun>乙)"), ("ACTION_verb",), ("ENTITY_noun",)),
     (re.compile("((?<=<ACTION_verb>[^<]{2}</ACTION_verb>)|(?<=<ACTION_verb>[^<]</ACTION_verb>)|(?<=</MODIFIER>))<ACTION_verb>甲</ACTION_verb>(?!$)"), ("ACTION_verb",), ("FUNC_inner",)),
     (re.compile("((?<=<ACTION_verb>[^<]{2}</ACTION_verb>)|(?<=<ACTION_verb>[^<]</ACTION_verb>)|(?<=</MODIFIER>))<ACTION_verb>甲</ACTION_verb>(?=$)"), ("ACTION_verb",), ("FUNC_degreeHead",)),
+    (re.compile("<ENTITY_noun>風吹</ENTITY_noun><ACTION_verb>落去</ACTION_verb>"), ("<ENTITY_noun>風吹</ENTITY_noun><ACTION_verb>落去</ACTION_verb>",), ("<ENTITY_noun>風</ENTITY_noun><ACTION_verb>吹落去</ACTION_verb>",)),
     (re.compile("<ENTITY_noun>風吹</ENTITY_noun><ACTION_verb>甲</ACTION_verb>"), ("吹</ENTITY_noun><ACTION_verb>甲</ACTION_verb>",), ("</ENTITY_noun><ACTION_verb>吹</ACTION_verb><FUNC_inner>甲</FUNC_inner>",)),
     (re.compile("<ENTITY_noun>火燒</ENTITY_noun><ACTION_verb>甲</ACTION_verb>"), ("燒</ENTITY_noun><ACTION_verb>甲</ACTION_verb>",), ("</ENTITY_noun><ACTION_verb>燒</ACTION_verb><FUNC_inner>甲</FUNC_inner>",)),
     (re.compile("<MODIFIER>燒</MODIFIER>(?=<ENTITY_noun>)"), ("MODIFIER",), ("ACTION_verb",)),
@@ -377,6 +379,7 @@ shiftRule =[
     (re.compile("<ENTITY_noun>一口灶</ENTITY_noun>"), ("<ENTITY_noun>一口灶</ENTITY_noun>",), ("<ENTITY_classifier>一口</ENTITY_classifier><ENTITY_noun>灶</ENTITY_noun>",)),
     (re.compile("<ACTION_verb>[^<]{1,2}</ACTION_verb><MODIFIER>一下</MODIFIER>"), ("</ACTION_verb><MODIFIER>", "ACTION_verb", "MODIFIER"), ("", "ACTION_quantifiedVerb", "ACTION_quantifiedVerb")),
     (re.compile("<MODIFIER>[^<]</MODIFIER><MODIFIER>一下</MODIFIER>"), ("</MODIFIER><MODIFIER>", "MODIFIER"), ("", "ACTION_quantifiedVerb")),
+    (re.compile("<MODIFIER>[^<]</MODIFIER><MODIFIER>[^<]</MODIFIER>"), ("</MODIFIER><MODIFIER>",), ("",)),
     (re.compile("(?<=焐</ACTION_verb>)<ENTITY_num>一</ENTITY_num><ACTION_verb>搭</ACTION_verb>"), ("</ENTITY_num><ACTION_verb>", "ENTITY_num", "ACTION_verb"), ("", "ENTITY_classifier", "ENTITY_classifier")),
     (re.compile("<ENTITY_noun>便</ENTITY_noun>$"), ("ENTITY_noun",), ("MODIFIER",)),
     (re.compile("<ENTITY_pronoun>𪜶</ENTITY_pronoun>(?=<ENTITY_pronoun>[舅叔嬸嫂婆爺爹娘父公爸母某翁]{1,2}</ENTITY_pronoun>)"), ("ENTITY_pronoun",), ("ENTITY_possessive",)),
@@ -481,4 +484,6 @@ shiftRule =[
     (re.compile("<ENTITY_measurement>一兩</ENTITY_measurement>(?=<ENTITY_noun>日)"), ("ENTITY_measurement",), ("ENTITY_num",)),
     (re.compile("(?<=招夫</ACTION_verb>)<ENTITY_noun>養子</ENTITY_noun>"), ("ENTITY_noun",), ("ACTION_verb",)),
     (re.compile("<ENTITY_classifier>歲</ENTITY_classifier>"), ("ENTITY_classifier",), ("ENTITY_noun",)),
+    (re.compile("(?<=</KNOWLEDGE_currency>)<MODIFIER_color>銀</MODIFIER_color>"), ("MODIFIER_color",), ("ENTITY_noun",)),
+    (re.compile("(?<=</ACTION_verb>)<ENTITY_noun>膏</ENTITY_noun>"), ("ENTITY_noun",), ("ACTION_verb",)),
 ]

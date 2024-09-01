@@ -1,1 +1,1 @@
-DT_ActionQuantifiedVerb = ["試看覓"]
+DT_ActionQuantifiedVerb = ["試看覓", "小等一下"]

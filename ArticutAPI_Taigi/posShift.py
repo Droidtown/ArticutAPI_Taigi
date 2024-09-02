@@ -314,7 +314,7 @@ shiftRule =[
     (re.compile("<CLAUSE_Q>敢有</CLAUSE_Q><ACTION_verb>影</ACTION_verb>"), ("<CLAUSE_Q>敢有</CLAUSE_Q><ACTION_verb>影</ACTION_verb>",), ("<CLAUSE_Q>敢</CLAUSE_Q><MODIFIER>有影</MODIFIER>",)),
     (re.compile("<CLAUSE_Q>敢好</CLAUSE_Q><ENTITY_noun>勢</ENTITY_noun>"), ("<CLAUSE_Q>敢好</CLAUSE_Q><ENTITY_noun>勢</ENTITY_noun>",), ("<CLAUSE_Q>敢</CLAUSE_Q><MODIFIER>好勢</MODIFIER>",)),
     (re.compile("<MODIFIER>規[^<氣]</MODIFIER>"), ("MODIFIER",), ("QUANTIFIER",)),
-    (re.compile("<ENTITY_noun>規[^<矩]</ENTITY_noun>"), ("<ENTITY_noun>規",), ("<QUANTIFIER>規</QUANTIFIER><ENTITY_noun>",)),
+    (re.compile("<ENTITY_noun>規[^<矩格]</ENTITY_noun>"), ("<ENTITY_noun>規",), ("<QUANTIFIER>規</QUANTIFIER><ENTITY_noun>",)),
     (re.compile("<ENTITY_noun>規身[^<]</ENTITY_noun>"), ("<ENTITY_noun>規身",), ("<QUANTIFIER>規</QUANTIFIER><ENTITY_noun>身",)),
     # </CLAUSE/MODIFIER => QUANTIFIER>
     (re.compile("((?<=</ENTITY_pronoun>)|(?<=</ENTITY_person>)|(?<=</ACTION_verb>)|(?<=</QUANTIFIER>)|(?<=</MODIFIER>))<CLAUSE_particle>咧</CLAUSE_particle>(?=<ACTION_verb>)"), ("CLAUSE_particle",), ("ASPECT",)),

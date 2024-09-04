@@ -388,6 +388,7 @@ shiftRule =[
     (re.compile("(?<=</FUNC_negation>)<MODIFIER>死</MODIFIER>"), ("MODIFIER",), ("ACTION_verb",)),
     (re.compile("<MODIFIER>死</MODIFIER>$"), ("MODIFIER",), ("ACTION_verb",)),
     (re.compile("<MODIFIER>[熱寒]</MODIFIER><ENTITY_noun>死人</ENTITY_noun>"), ("</MODIFIER><ENTITY_noun>死", "MODIFIER"), ("死</ACTION_verb><ENTITY_noun>", "ACTION_verb")),
+    (re.compile("<MODIFIER>貪</MODIFIER>(?=<ENTITY_noun>人)"), ("MODIFIER",), ("ACTION_verb",)),
     (re.compile("<ACTION_verb>懸</ACTION_verb><ENTITY_noun>崎</ENTITY_noun>"), ("<ACTION_verb>懸</ACTION_verb><ENTITY_noun>崎</ENTITY_noun>",), ("<ACTION_verb></ACTION_verb><ENTITY_noun>懸崎</ENTITY_noun>",)),
     (re.compile("<ACTION_verb>愛食</ACTION_verb><ENTITY_noun>色</ENTITY_noun>"), ("<ACTION_verb>愛食</ACTION_verb><ENTITY_noun>色</ENTITY_noun>",), ("<ACTION_verb>愛</ACTION_verb><ACTION_verb>食色</ACTION_verb>",)),
     (re.compile("<ACTION_verb>愛食</ACTION_verb><MODIFIER>飽</MODIFIER>"), ("<ACTION_verb>愛食</ACTION_verb><MODIFIER>飽</MODIFIER>",), ("<ACTION_verb>愛</ACTION_verb><ACTION_verb>食飽</ACTION_verb>",)),
@@ -399,7 +400,7 @@ shiftRule =[
     # </N => V>
     (re.compile("<ACTION_verb>[足傷]</ACTION_verb>((?=<ACTION_verb>)|(?=<MODIFIER>)|(?=<FUNC_negation>無))"), ("ACTION_verb",), ("FUNC_degreeHead",)),
     (re.compile("<ACTION_verb>通</ACTION_verb><MODIFIER>好</MODIFIER>(?=<ACTION_verb>)"), ("</ACTION_verb><MODIFIER>", "ACTION_verb", "MODIFIER"), ("", "MODAL", "MODAL")),
-    (re.compile("<ACTION_verb>通</ACTION_verb>((?=<ACTION_verb>)|(?=<MODIFIER>通))"), ("ACTION_verb",), ("MODAL",)),
+    (re.compile("<ACTION_verb>通</ACTION_verb>((?=<ACTION_verb>)|(?=<MODIFIER>較))"), ("ACTION_verb",), ("MODAL",)),
     (re.compile("((?<=一[^<]</MODIFIER>)|(?<=</FUNC_inner>)|(?<=</ACTION_verb>))<ACTION_verb>會</ACTION_verb>"), ("ACTION_verb",), ("MODAL",)),
     (re.compile("<ACTION_verb>會</ACTION_verb>(?=<ACTION)"), ("ACTION_verb",), ("MODAL",)),
     (re.compile("(?<=</FUNC_negation>)<ENTITY_noun>買賣</ENTITY_noun>"), ("ENTITY_noun",), ("ACTION_verb",)),

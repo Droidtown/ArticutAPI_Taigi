@@ -21,7 +21,7 @@
 - 台羅拼音轉譯白話字 (施作中…)
 
 ### 網頁操作介面：
-[國立清華大學語言學研究所:: 本土語言斷詞系統](https://taiwan-lingu.ist/segmentation/)
+[國立清華大學語言學研究所:: 本土語言斷詞系統](https://taiwan-lingu.ist/segment/)
 
 
 ## I. 基本操作：斷詞(WS)/詞性標記(POS)/命名實體辨識(NER)
